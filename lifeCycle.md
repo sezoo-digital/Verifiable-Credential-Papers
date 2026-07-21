@@ -198,9 +198,9 @@ The following is proposed:
 
 ---
 
-# Appendix A \- Possible future integration with TRQP
+# Appendix A \- Possible future integration with TRQP?
 
-This section considers the possibility of using "TRQP" with UNTP. 
+This section considers the possibility of using "TRQP" with UNTP. Consider it a thought experiment...
 
 TRQP is the "Trust Registry Query Protocol"[^9]. It is a specification developed by the Trust Over IP project within the Linux Decentralized Trust Foundation[^10]. Quoting from its introduction:
 
