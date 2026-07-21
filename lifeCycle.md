@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The aim of this document is to explore how the elements defined in the UNTP specification can be used to satisfy both current and historical questions about accreditation credentials.
+The aim of this document is to explore how the elements defined in the UNTP specification[^10] can be used to satisfy both current and historical questions about accreditation credentials.
 
 This document is focused on the topic of life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This focus is used to simplify and give context to the discussion. The design principles presented here can be applied to other types of credentials and other contexts. 
 
@@ -285,3 +285,5 @@ By implementing a **UNTP Profile for TRQP**, we can achieve additional benefits 
 [^8]: https://trustoverip.github.io/tswg-trust-registry-protocol/approved/
 
 [^9]: https://trustoverip.org/
+
+[^10]: https://untp.unece.org/
