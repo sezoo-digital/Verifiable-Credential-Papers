@@ -4,9 +4,9 @@
 
 The aim of this document is to explore how the elements defined in the UNTP specification can be used to satisfy both current and historical questions about accreditation credentials.
 
-This document is focused on the topic of life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). Despite this deliberate focus, the design principles presented here can be applied to other types of credentials. 
+This document is focused on the topic of life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This focus is used to simplify and give context to the discussion. The design principles presented here can be applied to other types of credentials and other contexts. 
 
-Of particular interest is how best could a UNTP implementation answer the question **"was product X tested to standards Y by a lab accredited to test them, in year Z?"**
+Of particular interest is the design question: how might we use UNTP to determine **"was product X tested to standards Y by a lab accredited to test them, in year Z?"**
 
 ## Example
 
