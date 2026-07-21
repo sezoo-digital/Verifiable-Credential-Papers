@@ -57,7 +57,7 @@ Revisiting our question: we want to explore whether, using UNTP, we can enable a
 
 Section 4.2 of the UN/CEFACT white paper on conformity exchange[^1] "Management of conformity lifecycle" proposes that "Digitalising status information in the context of conformity attestations warrants further investigation". It further proposes that
 
-Regardless, one important principle when dealing with management of conformity data lifecycle is that the issuer of the attestation be recognised as retaining authority over the attestation, in order to provide certainty over the state (e.g., withdrawal, amendment, expiry) of an attestation over its valid lifetime.
+> Regardless, one important principle when dealing with management of conformity data lifecycle is that the issuer of the attestation be recognised as retaining authority over the attestation, in order to provide certainty over the state (e.g., withdrawal, amendment, expiry) of an attestation over its valid lifetime.
 
 Absent from the discussion in this section is a consideration of how to manage and present historical data.
 
