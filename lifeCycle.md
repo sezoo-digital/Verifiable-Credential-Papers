@@ -244,7 +244,7 @@ The diagram below shows how the flow could work.
 
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["Int'l Verifier"] -->|"1. Sends TRQP Query<br/>(e.g., 'Authorized at T_query?')"| B["Local TRQP Endpoint (NATA)"]
     
     subgraph Translation ["Local TRQP Translation Engine"]
