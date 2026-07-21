@@ -80,7 +80,9 @@ stateDiagram
 
 If we consider our example use case, the credential issued 15 years ago goes from `Current` to `Withdrawn` 5 years ago when the certificate became no longer valid as the lab no longer performs the same tests on steel. However, at no time (in our example) is the certificate in a `Suspended` state. 
 
-The operating practice of Accreditation Bodies is to display the current state of credentials. So in 2026, the status of AC1 would be `withdrawn` and AC2 would be `current`. However, Accreditation bodies do not display the full history of all accreditations ever issued. Historical searches typically demand contacting the Accreditation Body directly. It is unlikely that an Accreditation Body search would provide 5 years of history.
+The operating practice of Accreditation Bodies is to display the current state of credentials. So in 2026, the status of AC1 would be `withdrawn` and AC2 would be `current`. Further, the information presented may be limited to the current state, the date on which that state was registered, and the original issued date. This means that it is not possible to determine when previous state changes ocurred and for how long the accreditation was in that state. 
+
+Further, Accreditation bodies do not display the full history of all accreditations ever issued. Historical searches typically demand contacting the Accreditation Body directly. It is unlikely that an Accreditation Body search would provide more than the statutory (legally) specified range of history an may choose to only present a subset of this history, the last 5 years (say).
 
 ## UNTP Elements
 
