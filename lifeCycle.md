@@ -209,9 +209,9 @@ TRQP is the "Trust Registry Query Protocol"[^9]. It is a specification developed
 > 1. Authorization Queries: “Has Authority A authorized Entity B to take Action X on Resource Y?”
 > 2. Recognition Queries: "Does Authority X recognize Entity B as an authority to authorize taking Action X on Resource Y?”
 
-Our question at the beginning of this document "was product X tested to standards Y by a lab accredited to test them in year Z?" can be seen to be very similar to a questions that TRQP seeks to address.
+Our question at the beginning of this document "was product X tested to standards Y by a lab accredited to test them in year Z?" can be seen to be very similar to the type of questions that TRQP seeks to address. It can also be seen to have applicability to the UN/CEFACT GRID project, which focuses on Authoritative Registrars and their Registers. For now, we'll stick with our credential status life cycle focus.
 
-We might consider integrating the Trust over IP (ToIP) **Trust Registry Query Protocol (TRQP / TQRP) v2.0**[^7] into the UNTP approach.
+So might we consider using the Trust over IP (ToIP) **Trust Registry Query Protocol (TRQP / TQRP) v2.0**[^7] with UNTP? Would that be a good addition?
 
 TRQP describes itself as the **"DNS for digital trust,"**. It is designed as a lightweight, read-only query protocol that enables queries across heterogeneous governance models using a standard protocol.
 
