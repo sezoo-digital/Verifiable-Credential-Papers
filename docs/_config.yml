@@ -1,3 +1,12 @@
-theme: jekyll-theme-minimal
-title: Sezoo Papers on Verifiable Credentials
-description: Thought experiments and early drafts on papers and articles
+remote_theme: just-the-docs/just-the-docs
+
+# Core Site Settings
+title: Verifiable Credential Papers
+description: A repository for Verifiable Credential research and documentation.
+
+# Enable Mermaid Diagram Rendering
+mermaid:
+  version: "latest"
+
+# Just the Docs specific configurations
+nav_sort: case_insensitive # Automatically sorts pages by title
