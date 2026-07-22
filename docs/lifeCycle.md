@@ -3,6 +3,8 @@ layout: default
 title: "Verifiable Credentials Status Over Time"
 ---
 
+# Verifiable Credentials Status Over Time
+
 ## Introduction
 
 The aim of this document is to explore how the elements defined in the UNTP specification[^10] can be used to satisfy both current and historical questions about accreditation credentials.
