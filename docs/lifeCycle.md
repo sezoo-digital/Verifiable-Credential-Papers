@@ -1,4 +1,8 @@
-# Verifiable Credential Status Over Time
+---
+layout: page
+title: "Verifiable Credentials Status Over Time"
+permalink: /URL-PATH
+---
 
 ## Introduction
 
