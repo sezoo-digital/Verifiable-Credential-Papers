@@ -9,7 +9,7 @@ title: "Verifiable Credentials Status Over Time"
 
 The aim of this document is to explore how the elements defined in the UNTP specification[^10] can be used to satisfy both current and historical questions about accreditation credentials.
 
-This document is focused on the topic of life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This focus is used to simplify and give context to the discussion. The design principles presented here can be applied to other types of credentials and other contexts. 
+This document is focused on the topic of life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This focus is used to simplify and give context to the discussion. We believe that the design principles presented here can be applied to other types of credentials and other contexts. 
 
 Of particular interest is the design question: how might we use UNTP to determine **"was product X tested to standards Y by a lab accredited to test them, in year Z?"**
 
@@ -19,7 +19,7 @@ We'll use a simple model, but one that is expressive enough to be extended to ot
 
 Our simple supply chain use case is as follows:
 
-1. In Year-01, An Accreditation Body (AB) accredits a testing facility (TF) \- a lab for steel testing: the accreditation has a unique reference, "AC1". IN UNTP terms, the accreditation is issued as a Digital Identity Anchor (DIA)
+1. In Year-01, An Accreditation Body (AB) accredits a testing facility (TF) \- a lab for steel testing: the accreditation has a unique reference, "AC1". In UNTP terms, the accreditation is issued as a Digital Identity Anchor (DIA)
 <br>
 
 2. In Year-02, A Steel Manufacturer (SM) makes a green steel product, GREEN001, and gets a batch tested by the Testing Facility.
@@ -27,13 +27,13 @@ Our simple supply chain use case is as follows:
    2.1. The Testing Facility issues a (positive) conformity assessment (CA1) for GREEN001 against criteria that they are accredited to test against and that are applicable for GREEN001's intended use as a reinforced steel used in building. In UNTP terms, the conformity assessment is issued as a Digital Conformity Credential (DCC). 
 <br>
 
-3. In Year-03, the Steel Manufacturer sells a batch of the tested GREEN001 steel product to a customer, a prime contractor (PC) that uses it to build an office block (B1). In UNTP terms, a Digital Product Passport (DPP) would accompany the delivery.
+1. In Year-03, the Steel Manufacturer sells a batch of the tested GREEN001 steel product to a customer, a prime contractor (PC) that uses it to build an office block (B1). In UNTP terms, a Digital Product Passport (DPP) would be issued and would be referenced in the delivery documentation and (possibly) through on-product labelling (e.g. QR code).
 <br>
 
-4. In Year-10 the Testing Facility changes business models and switches away from testing this type of steel. Its AC1 accreditation is withdrawn voluntarily and it applies, successfully, for new accreditation, AC2, in Year-11.
+1. In Year-10 the Testing Facility changes business models and switches away from testing this type of steel. Its AC1 accreditation is withdrawn voluntarily and it applies, successfully, for new accreditation, AC2, in Year-11.
 <br>
 
-5. In Year-17, a new building inspector wants to know whether the building (B1) can genuinely claim its "green" status. They want to know: "Was the steel used in this building a certified green steel. If so, who certified it, to what standards, and were they accredited for that certification by a recognised accreditation body **15 YEARS AGO**.
+1. In Year-17, a new building inspector wants to know whether the building (B1) can genuinely claim its "green" status. They want to know: "Was the steel used in this building a certified green steel. If so, who certified it, to what standards, and were they accredited for that certification by a recognised accreditation body **15 YEARS AGO**.
 <br>
 
 If we consider these two accreditation certificates to be "AC1" and "AC2", and we make Year-01 equal "2012", we might draw a timeline as shown below:
