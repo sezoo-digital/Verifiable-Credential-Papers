@@ -122,7 +122,7 @@ For example, if we set `statusSize` to 2 bits for the status we get 4 possible s
 
 This could be represented by a `credentialStatus.statusMessage` array as shown below (ignoring the explanation for each state provided above):
 
-```JSON
+```json
 [
   {
     "status": "0x0",
