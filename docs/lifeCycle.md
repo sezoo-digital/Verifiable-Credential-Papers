@@ -185,8 +185,15 @@ We can explore how this might work from an algorithmic test point of view.
 When a verifier queries the Identity Resolver (IDR) for historical date ($T_{\text{query}}$), the resolver must execute a "Latest-Before" optimization logic test as follows:
 
 1. Gather the complete collection of VCs issued by the Accreditation Body for the specific Facility identifier.
-2. Filter the collection to include only VCs where:$$T_{\text{validFrom}} \le T_{\text{query}}$$
-3. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp: $$\text{Target VC} = \text{argmax}_{VC} \{ VC.validFrom \mid VC.validFrom \le T_{\text{query}} \}$$
+<br>
+2. Filter the collection to include only VCs where:
+$$
+T_{\text{validFrom}} \le T_{\text{query}}
+$$
+<br>
+1. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp: $$
+\text{Target VC} = \text{argmax}_{VC} \{ VC.validFrom \mid VC.validFrom \le T_{\text{query}} \}
+$$
 
 ## Conclusion - all states considered
 

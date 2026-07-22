@@ -12,5 +12,10 @@ mermaid:
 math:
   enabled: true
 
+kramdown:
+  math_engine: mathjax
+  # 🔌 Forces Jekyll to recognize single dollar signs as inline math
+  input: GFM 
+
 # Just the Docs specific configurations
 nav_sort: case_insensitive # Automatically sorts pages by title
