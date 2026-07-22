@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "Verifiable Credentials Status Over Time"
 ---
 
