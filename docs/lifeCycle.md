@@ -33,7 +33,7 @@ Our simple supply chain use case is as follows:
 4. In Year-10 the Testing Facility changes business models and switches away from testing this type of steel. Its AC1 accreditation is withdrawn voluntarily and it applies, successfully, for new accreditation, AC2, in Year-11.
 <br>
 
-5. In Year-17, a new building inspector wants to know whether the building (B1) can genuinely claim its "green" status. They want to know: "Was the steel used in this building a certified green steel. If so, who certified it, to what standards, and were they accredited for that certification by a recognised accreditation body **15 YEARS AGO**.
+5. In Year-14, a new building inspector wants to know whether the building (B1) can genuinely claim its "green" status. They want to know: "Was the steel used in this building a certified green steel. If so, who certified it, to what standards, and were they accredited for that certification by a recognised accreditation body **11 YEARS AGO**.
 <br>
 
 If we consider these two accreditation certificates to be "AC1" and "AC2", and we make Year-01 equal "2012", we might draw a timeline as shown below:
