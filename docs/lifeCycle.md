@@ -83,7 +83,7 @@ stateDiagram
   Withdrawn --> [*]
 ```
 
-If we consider our example use case, the credential issued 15 years ago goes from `Current` to `Withdrawn` 5 years ago when the certificate became no longer valid as the lab no longer performs the same tests on steel. However, at no time (in our example) is the certificate in a `Suspended` state. 
+If we consider our example use case, the credential issued 11 years ago goes from `Current` to `Withdrawn` 4 years ago when the certificate became no longer valid as the lab no longer performs the same tests on steel. However, at no time (in our example) is the certificate in a `Suspended` state. 
 
 The operating practice of Accreditation Bodies is to display the current state of credentials. So in 2026, the status of AC1 would be `withdrawn` and AC2 would be `current`. Further, the information presented may be limited to the current state, the date on which that state was registered, and the original issued date. This means that it is not possible to determine when previous state changes ocurred and for how long the accreditation was in that state. 
 
@@ -109,7 +109,7 @@ The `credentialStatus` field uses the W3C VC `bitStringStatus` approach to manag
 
 The `bitStringStatus` field is a standard W3C Verifiable Credential Data Model construct[^4]. The controlling specification for the use of the `bitStringStatusList` is "Bitstring Status List v1.0, Privacy-preserving status information for Verifiable Credentials" W3C Recommendation 15 May 2025: [https://www.w3.org/TR/vc-bitstring-status-list/](https://www.w3.org/TR/vc-bitstring-status-list/).
 
-Most implementations of the W3C VC Data Model use a single-bit status (on/off, valid/not valid, revoked/active etc.). The W3C standard allows for more than one bit to be used to represent the status of each issued credential by setting the `statusSize` value greater than 1. If the `statusSize` attribute is set to a value greater than 1 then the property `credentialStatus.statusMessage` MUST also be present and the number of status messages MUST equal the number of possible values. In other words, we can have more than one value for status, but if we do, we must define what each value means.
+Most implementations of the W3C VC Data Model use a single-bit status (on/off, valid/not valid, revoked/active etc.). The W3C standard allows for more than one bit to be used to represent the status of each issued credential by setting the `statusSize` value greater than 1. If the `statusSize` attribute is set to a value greater than 1 then the property `credentialStatus.statusMessage` MUST also be present and the number of status messages MUST equal the number of possible values. In other words, we can have more than a single binary value for status, but if we do, we must define what each value means.
 
 For example, if we set `statusSize` to 2 bits for the status we get 4 possible states. So, we could have:
 
@@ -192,7 +192,7 @@ $$
 T_{\text{validFrom}} \le T_{\text{query}}
 $$
 
-1. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:
+3. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:
 
 $$
 \text{Target VC} = \text{argmax}_{VC} \{ VC.validFrom \mid VC.validFrom \le T_{\text{query}} \}
