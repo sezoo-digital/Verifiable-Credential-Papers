@@ -19,3 +19,14 @@ kramdown:
 
 # Just the Docs specific configurations
 nav_sort: case_insensitive # Automatically sorts pages by title
+
+callouts:
+  note:
+    title: Note
+    color: purple
+  warning:
+    title: Warning
+    color: red
+  tip:
+    title: Pro Tip
+    color: green
