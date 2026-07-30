@@ -148,21 +148,19 @@ This could be represented by a `credentialStatus.statusMessage` array as shown b
 
 This begins to look attractive as a mechanism to manage credential status. **HOWEVER** it is important to remember that verifiable credentials are typically treated as immutable records once issued. Changing contents without re-signing breaks the signature. Changing contents and re-signing is typically treated as a new issued instance.
 
-The `bitStringStatus` is designed to enable revocation by the issuer without altering the content of the VC. A typical instance given of its use is the _temporary_ suspension of something like a driving licence which might in a future date be reinstated.
+The `bitStringStatus` is designed to enable revocation by the issuer without altering the content of the VC. A typical instance given of its use is the _temporary_ suspension of something like a driving licence which might in a future date be reinstated. With a driving licence we are usually interested in whether the driver of a car is licenced to drive the car they are driving **now** - not whether they **were** licenced last month.
 
-This means that, in terms of temporal application, the `bitStringStatus` is designed to solve a "now" query - what is the status of this credential **now**? It is not intended to answer the question: what **was** the status of this credential in the past?
+In conclusion, the `bitStringStatus` is designed to solve a "now" query - what is the status of this credential **now**? It is not intended to answer the question: what **was** the status of this credential in the past?
 
 ### Validity Periods: from and until
 
-Returning to our use pattern for the `validFrom` and `validUntil` fields we might be tempted to update the `validUntil` field to specify a time bound limit for a credential that we have previously issued and that we now know has a specific end date. This is _technically_ possible because, in the UNTP model, the "issuer" retains control of the VC (keeps the record within their own controlled space rather than sending (issuing) it a remote "Holder" wallet outside of their control). Changing and re-signing is technically possible, but it not recommended.
+Returning to our use pattern for the `validFrom` and `validUntil` fields we might be tempted to update the `validUntil` field to specify a time bound limit for a credential that we have previously issued and that we now know has a specific end date. This is _technically_ possible because, in the UNTP model, the "issuer" retains control of the VC (keeps the record within their own controlled space rather than sending (issuing) it a remote "Holder" wallet outside of their control). Changing and re-signing is technically possible, but it is not recommended.
 
-As we noted before, changing the content of a VC breaks the W3C VC expectation that VCs are immutable records. As a side note, it also makes the digital experience differ from the existing physical experience when a physical (or PDF) copy of an accreditation credential would be sent to a Facility with the issue date and no expiry date. This would then be stored by the Facility and becomes, to an extent, an immutable record. 
-
-Editing and re-signing also causes other headaches. In high-throughput environments (like custom border checkpoints or automated logistics gates), we should expect verifiers to cache hosted VCs to improve performance. If a VC payload is updated and resigned without changing the identifier, it will create cache-invalidation failures across distributed edge nodes in the ecosystem.
+As we noted before, changing the content of a VC breaks the W3C VC expectation that VCs are immutable records. Changing and resigning means that the signature value, while valid for the new content and the key used, has change. Such changes could impact cached records and cause re-flags for observant verifiers. As a side note, editing the verifiable credential also makes the digital experience differ from the existing physical experience when a physical (or PDF) copy of an accreditation credential would be sent to a Facility with the issue date and no expiry date. This would then be stored by the Facility and becomes, to an extent, an immutable record. 
 
 Basically, if we issued the credential with a blank `validUntil` field, it should stay blank.
 
-The good news is that we don't need to edit and re-sign previously issued credentials, there are better design patterns to use. We can use other elements of the UNTP specification to provide this capability and adhere to the best practice of W3C VC use AND mirror the existing physical world pattern.
+The good news is that we don't need to edit and re-sign previously issued credentials, there are better design patterns to use. In fact the UNTP specification has something that we can use that will provide the capability we want **and** adhere to the best practice of W3C VC use **and** mirror the existing physical world pattern.
 
 ### UNTP Identity Resolver
 
@@ -181,7 +179,7 @@ For our discussion in this document, the critical capability of the UNTP IDR spe
 
 Returning to our use case above, this means that a query on the Accreditation held by the Testing Facility (TF) will return the current credential (AC2) and, *if requested*, the full history of previous credentials, including AC1.
 
-Expanding on this logic further: because in the context of Accreditations "Suspended" or "Withdrawn" are explicit legal changes, we must cryptographically sign a new statement. We cannot represent a suspension simply by deleting the old VC; we must issue a new record where the credentialSubject.status explicitly equals "Suspended".
+Expanding on this logic further: because in the context of Accreditations "Suspended" or "Withdrawn" are explicit legal changes, we must cryptographically sign any new statement. We cannot represent a suspension simply by deleting the old VC; we must issue a new record where the `credentialSubject.status` value equals `suspended`.
 
 We can explore how this might work from an algorithmic test point of view.
 
@@ -189,18 +187,19 @@ When a verifier queries the Identity Resolver (IDR) for historical date ($T_{\te
 
 1. Gather the complete collection of VCs issued by the Accreditation Body for the specific Facility identifier.
 <br>
-2. Filter the collection to include only VCs where:
+1. Filter the collection to include only VCs where:
 <br>
 $$
 T_{\text{validFrom}} \le T_{\text{query}}
 $$
 <br>
-3. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:
+1. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:
 <br>
 $$
 \text{Target VC} = \text{argmax}_{VC} \{ VC.validFrom \mid VC.validFrom \le T_{\text{query}} \}
 $$
 
+The returned credential is the one that was current at $T_{\text{query}}$, the time of interest for our query.
 
 ## Conclusion - all states considered
 
@@ -221,14 +220,14 @@ The following is proposed:
 
 This section considers the possibility of using "TRQP" with UNTP. Consider it a thought experiment...
 
-TRQP is the "Trust Registry Query Protocol"[^9]. It is a specification developed by the Trust Over IP project within the Linux Decentralized Trust Foundation[^10]. Quoting from its introduction:
+TRQP is the "Trust Registry Query Protocol"[^9]. It is a specification developed by the Trust Over IP project within the Linux Decentralized Trust Foundation[^10]. Quoting from the TRQP introduction:
 
 > TRQP focuses on two query types:
 >
 > 1. Authorization Queries: “Has Authority A authorized Entity B to take Action X on Resource Y?”
 > 2. Recognition Queries: "Does Authority X recognize Entity B as an authority to authorize taking Action X on Resource Y?”
 
-Our question at the beginning of this document "was product X tested to standards Y by a lab accredited to test them in year Z?" can be seen to be very similar to the type of questions that TRQP seeks to address. It can also be seen to have applicability to the UN/CEFACT GRID project, which focuses on Authoritative Registrars and their Registers. For now, we'll stick with our credential status life cycle focus.
+Our question at the beginning of this document "was product X tested to standards Y by a lab accredited to test them in year Z?" can be seen to be very similar to the type of questions that TRQP seeks to address. TRQP as a concept can also be seen to have applicability to the UN/CEFACT GRID project, which focuses on Authoritative Registrars and their Registers. For now, we'll stick with our credential status life cycle focus.
 
 So might we consider using the Trust over IP (ToIP) **Trust Registry Query Protocol (TRQP / TQRP) v2.0**[^7] with UNTP? Would that be a good addition?
 
