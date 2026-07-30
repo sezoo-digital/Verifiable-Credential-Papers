@@ -8,6 +8,9 @@ title: "Verifiable Credentials Status Over Time"
 Some mathemetical expressions aren't rendered neatly in the Jekyll rendered html page. Refer to the Markdown original if necessary.
 {: .note }
 
+Thought - Can we make use of the webvh method of a chained hashes for VCs?.
+{: .note }
+
 ## Introduction
 
 The aim of this document is to explore how the elements defined in the UNTP specification[^10] can be used to satisfy both current and historical questions about accreditation credentials.
