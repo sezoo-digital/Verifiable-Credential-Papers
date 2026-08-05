@@ -81,11 +81,11 @@ stateDiagram
   direction TB
   [*] --> Current:Accreditation requirements met
   Current --> Suspended:Requirements not met
-  Current --> Withdrawn:No longer valid (e.g. replacement version issued)
+  Current --> Withdrawn:No longer valid <br/>(e.g. replacement version issued)
   Current --> Expired:For time-limited attestations only
   Suspended --> Current:Requirements met
   Suspended --> Withdrawn:Failure to resolve suspension
-  Expired --> Withdrawn:Based on CAB policies or if otherwise rendered historically invalid
+  Expired --> Withdrawn:Based on CAB policies or <br/>if otherwise rendered historically invalid
   Withdrawn --> [*]
 ```
 
