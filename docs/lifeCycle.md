@@ -153,7 +153,7 @@ This begins to look attractive as a mechanism to manage credential status. **HOW
 
 The `bitStringStatus` is designed to enable revocation by the issuer without altering the content of the VC. A typical instance given of its use is the _temporary_ suspension of something like a driving licence which might in a future date be reinstated. With a driving licence we are usually interested in whether the driver of a car is licenced to drive the car they are driving **now** - not whether they **were** licenced last month.
 
-In conclusion, the `bitStringStatus` is designed to solve a "now" query - what is the status of this credential **now**? It is not intended to answer the question: what **was** the status of this credential in the past?
+In conclusion, the `bitStringStatus` is designed to solve a "now" query - what is the status of this credential **now**? It is not intended to answer the question: what **was** the status of this credential at *this* point in time?
 
 ### Validity Periods: from and until
 
