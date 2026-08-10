@@ -90,7 +90,7 @@ stateDiagram
   Current --> Expired:For time-limited attestations only
   Suspended --> Current:Requirements</br>met
   Suspended --> Withdrawn:Failure to resolve suspension
-  Expired --> Withdrawn:Based on CAB policies or if otherwise rendered historically invalid
+  Expired --> Withdrawn:Based on CAB policies or <br/>if otherwise rendered historically invalid
   Withdrawn --> [*]
 ```
 
