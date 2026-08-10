@@ -203,9 +203,10 @@ When a verifier queries the Identity Resolver (IDR) for historical date _T_query
 
 1. Gather the complete collection of VCs issued by the Accreditation Body for the specific Facility identifier: _completeSet_
 <br>
-1. Filter the collection to include only VCs that are issued before our query date, so </br> _filteredSet = completeSet where completeSet.validFrom <= T_query_ </br></br>
+1. Filter the collection to include only VCs that are issued before our query date, so <br>_filteredSet = completeSet where completeSet.validFrom <= T_query_ 
+<br>
 
-2. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:</br>_targetVC_ = _max_ {_filteredSet.validFrom_}
+2. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:<br>_targetVC_ = _max_ {_filteredSet.validFrom_}
 
 
 The returned credential is the most recent one that was current at _T_query_, the time of interest for our query.
