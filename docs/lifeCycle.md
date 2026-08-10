@@ -210,7 +210,7 @@ When a verifier queries the Identity Resolver (IDR) for historical date _T_query
 
 
 The returned credential is the most recent one that was current at _T_query_, the time of interest for our query.
-_
+
 ## Conclusion - all states considered
 
 The following is proposed:
