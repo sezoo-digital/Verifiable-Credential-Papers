@@ -17,7 +17,9 @@ The aim of this document is to explore how the elements defined in the UNTP spec
 
 This document is focused on the topic of life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This focus is used to simplify and give context to the discussion. We believe that the design principles presented here can be applied to other types of credentials and other contexts. 
 
-Of particular interest is the design question: how might we use UNTP to determine **"was product X tested to standards Y by a lab accredited to test them, in year Z?"**
+Of particular interest are how might we use UNTP to determine questions like:
+-  **"was product X tested to standards Y by a lab accredited to test them, in year Z?"**
+-  **"was organisation X registered by an authoritative registrar of country Y in year Z?"**
 
 ## Example
 
@@ -77,13 +79,16 @@ Section 6.5.6 of the UN/CEFACT Business Requirements Specification (BRS) "Digita
 Annex 5 of the same document contains a life cycle diagram as a state transition diagram. The diagram is reproduced below showing each state and the transitions between them:
 
 ```mermaid
+---
+title: State Transition Diagram for Accreditations
+---
 stateDiagram
   direction TB
   [*] --> Current:Accreditation requirements met
-  Current --> Suspended:Requirements not met
+  Current --> Suspended:Requirements</br>not met
   Current --> Withdrawn:No longer valid (e.g. replacement version issued)
   Current --> Expired:For time-limited attestations only
-  Suspended --> Current:Requirements met
+  Suspended --> Current:Requirements</br>met
   Suspended --> Withdrawn:Failure to resolve suspension
   Expired --> Withdrawn:Based on CAB policies or if otherwise rendered historically invalid
   Withdrawn --> [*]
@@ -97,17 +102,17 @@ Further, Accreditation bodies do not display the full history of all accreditati
 
 ## UNTP Elements
 
-The UNTP credential identified as the most suitable for use as an Accreditation Credential is the Digital Identity Anchor[^3].
+The UNTP credential identified for use as an Accreditation Credential is the Digital Identity Anchor[^3]. This is for the instance where a national accreditation body recognises ("accredits") an organisation that provides conformity assessments. In the UNTP 0.7 specification, an accredited Conformity Assessment Body (CAB) is expected to issue a Conformancy Credential[^11]. 
 
-The key elements of the specification of this credential for this discussion are:
+The Digital Identity Anchor and Conformity Credential contain the same key elements needed for this discussion:
 
 - `validFrom`  
 - `validUntil`  
 - `credentialStatus`
 
-The `validFrom` and `validUntil` fields are date fields. UNTP does not require either field to contain a value (they are not mandatory). The use of these fields is mapped to the Issuer's standard operating practice on issuing an Accreditation Credential.
+The `validFrom` and `validUntil` fields are date fields. UNTP does not require either field to contain a value (they are not mandatory). The use of these fields is mapped to the Issuer's standard operating practice on issuing a Credential.
 
-A typical use pattern for an Accreditation Credential can be that the value of the `validFrom` field is set to the date on which accreditation is recognised, and the `validUntil` field is left blank (or "null") as the recognition does not have a preset expiry date.
+A common use pattern is that the value of the `validFrom` field is set to the date on which accreditation is recognised, and the `validUntil` field is left blank (or "null") as the recognition does not have a preset expiry date.
 
 The `credentialStatus` field uses the W3C VC `bitStringStatus` approach to managing credential status. We'll explore that in the next section and then return to the `validFrom` and `validUntil` fields.
 
@@ -115,11 +120,11 @@ The `credentialStatus` field uses the W3C VC `bitStringStatus` approach to manag
 
 The `bitStringStatus` field is a standard W3C Verifiable Credential Data Model construct[^4]. The controlling specification for the use of the `bitStringStatusList` is "Bitstring Status List v1.0, Privacy-preserving status information for Verifiable Credentials" W3C Recommendation 15 May 2025: [https://www.w3.org/TR/vc-bitstring-status-list/](https://www.w3.org/TR/vc-bitstring-status-list/).
 
-Most implementations of the W3C VC Data Model use a single-bit status (on/off, valid/not valid, revoked/active etc.). The W3C standard allows for more than one bit to be used to represent the status of each issued credential by setting the `statusSize` value greater than 1. If the `statusSize` attribute is set to a value greater than 1 then the property `credentialStatus.statusMessage` MUST also be present and the number of status messages MUST equal the number of possible values. In other words, we can have more than a single binary value for status, but if we do, we must define what each value means.
+Most implementations of the W3C VC Data Model use a single-bit status allowing a binary value to be represented (on/off, valid/not valid, revoked/active etc.). The W3C standard allows for more than one bit to be used to represent the status of each issued credential by setting the `statusSize` value greater than 1. If the `statusSize` attribute is set to a value greater than 1 then the property `credentialStatus.statusMessage` MUST also be present and the number of status messages MUST equal the number of possible values. In other words, we can have more than a binary value for status, but if we do, we must define what each value means.
 
 For example, if we set `statusSize` to 2 bits for the status we get 4 possible states. So, we could have:
 
-| Binary (2 bits) | Hex Value | NATA State and example cause                    |
+| Binary (2 bits) | Hex Value | Accreditation State and example cause                    |
 |:--------------- |:--------- |:----------------------------------------------- |
 | 00              | 0x0       | Active (The initially awarded state)            |
 | 01              | 0x1       | Suspended (Temporarily invalid)                 |
@@ -149,17 +154,25 @@ This could be represented by a `credentialStatus.statusMessage` array as shown b
 ]
 ```
 
-This begins to look attractive as a mechanism to manage credential status. **HOWEVER** it is important to remember that verifiable credentials are typically treated as immutable records once issued. Changing contents without re-signing breaks the signature. Changing contents and re-signing is typically treated as a new issued instance.
-
 The `bitStringStatus` is designed to enable revocation by the issuer without altering the content of the VC. A typical instance given of its use is the _temporary_ suspension of something like a driving licence which might in a future date be reinstated. With a driving licence we are usually interested in whether the driver of a car is licenced to drive the car they are driving **now** - not whether they **were** licenced last month.
 
-In conclusion, the `bitStringStatus` is designed to solve a "now" query - what is the status of this credential **now**? It is not intended to answer the question: what **was** the status of this credential in the past?
+This means that the `bitStringStatus` is designed to solve a "now" query - what is the status of this credential **now**? It is not intended to answer the question: "what **was** the status of this credential at a **point in time?"**
+
+The `bitStringStatus` cannot answer this question since changing its value to reflect **current** status does not automatically leave a trail of evidence for historical queries.
+
+We **could** use the `bitStringStatus` for two main purposes:
+1. As a temporary status change for the current version of a credential where we expect the status might toggle and we need an immediate response to a change of status.
+2. As a permanent whole of lifetime change for an historically issued credential that has been deemed to be wrongly issued after the fact.    
+
+This can be useful applications, but we need to explore other methods to achieve our verifiable history.
 
 ### Validity Periods: from and until
 
 Returning to our use pattern for the `validFrom` and `validUntil` fields we might be tempted to update the `validUntil` field to specify a time bound limit for a credential that we have previously issued and that we now know has a specific end date. This is _technically_ possible because, in the UNTP model, the "issuer" retains control of the VC (keeps the record within their own controlled space rather than sending (issuing) it a remote "Holder" wallet outside of their control). Changing and re-signing is technically possible, but it is not recommended.
 
-As we noted before, changing the content of a VC breaks the W3C VC expectation that VCs are immutable records. Changing and resigning means that the signature value, while valid for the new content and the key used, has change. Such changes could impact cached records and cause re-flags for observant verifiers. As a side note, editing the verifiable credential also makes the digital experience differ from the existing physical experience when a physical (or PDF) copy of an accreditation credential would be sent to a Facility with the issue date and no expiry date. This would then be stored by the Facility and becomes, to an extent, an immutable record. 
+The expected practice and use of verifiable credentials is that they are immutable records once issued. This reflects their usual use pattern where they are issued to a wallet under the control of the holder and the issuer has control over the wallet content.
+
+Changing the content of a VC and resigning it breaks the W3C VC expectation that VCs are immutable records and means that the signature value, while valid for the new content and the key used, has changed. Such changes could impact cached records and cause red-flags for observant verifiers. As a side note, editing the verifiable credential also makes the digital experience differ from the existing physical experience when a physical (or PDF) copy of an accreditation credential would be sent to a Facility with the issue date and no expiry date. This would then be stored by the Facility and becomes, to an extent, an immutable record. 
 
 Basically, if we issued the credential with a blank `validUntil` field, it should stay blank.
 
@@ -167,9 +180,9 @@ The good news is that we don't need to edit and re-sign previously issued creden
 
 ### UNTP Identity Resolver
 
-The "Identity Resolver" (IDR) is a part of the UNTP Specification[^5]. An identity resolver is a web-based service that accepts a machine-readable identifier (like a barcode, QR code, URL, or decentralised identifier (DID)) and returns the data linked to it.
+The "Identity Resolver" (IDR) is a part of the UNTP Specification[^5]. An identity resolver is a web-based service that accepts a machine-readable identifier (like a barcode, QR code, URL, or decentralised identifier (DID)) and returns the data associated with it as a linked list of one or more records.
 
-That means it "resolves" (or redirects) using the identifier value as an address to retrieve structured links to authoritative data sources. This enables systems, from handheld scanners to compliance platforms, to retrieve context-specific information for traceability, certification, regulatory reporting and more.
+That means it "resolves" (or redirects) using the identifier value as an address to retrieve structured links to authoritative data sources. This enables mirrors existing systems, from handheld scanners to compliance platforms, to retrieve context-specific information for traceability, certification, regulatory reporting and more.
 
 An identity resolver is not a registry or primary data store. It acts as a routing and resolution layer that connects identifiers to the systems or authorities that hold the relevant data.
 
@@ -178,37 +191,30 @@ The IDR enables the UNTP `discover → resolve → verify` workflow by returning
 - Registry-managed identifiers (e.g. Accreditation References, GTINs or location codes etc. assigned by authorities)  
 - Self-assigned identifiers, such as DIDs (Decentralised Identifiers) controlled by the entity itself
 
-For our discussion in this document, the critical capability of the UNTP IDR specification is that it supports version history[^6]. The example given in the UNTP specification at version `0.7.0` considers a Digital Product Passport, but the same approach can be used for other UNTP credentials. 
+This is the enabling capability of the UNTP IDR specification: it supports **version history**[^6]. We can see an example in the UNTP specification at version `0.7.0` which considers a Digital Product Passport, but the IDR approach will work for all UNTP credentials. 
 
-Returning to our use case above, this means that a query on the Accreditation held by the Testing Facility (TF) will return the current credential (AC2) and, *if requested*, the full history of previous credentials, including AC1.
+Returning to our use case above, this means that a query on the Accreditation held by the Testing Facility (TF) will return the current credential (AC2) and, *if requested*, the full linked history of previous credentials, including AC1.
 
-Expanding on this logic further: because in the context of Accreditations "Suspended" or "Withdrawn" are explicit legal changes, we must cryptographically sign any new statement. We cannot represent a suspension simply by deleting the old VC; we must issue a new record where the `credentialSubject.status` value equals `suspended`.
+Expanding on this logic further. In the context of Accreditations, "Suspended" or "Withdrawn" are explicit legal changes, and we must cryptographically sign any new statement. We cannot represent a suspension simply by deleting the old VC; we must issue a new record where the `credentialSubject.status` value equals `suspended`.
 
 We can explore how this might work from an algorithmic test point of view.
 
-When a verifier queries the Identity Resolver (IDR) for historical date ($T_{\text{query}}$), the resolver must execute a "Latest-Before" optimization logic test as follows:
+When a verifier queries the Identity Resolver (IDR) for historical date _T_query_, the resolver must execute a "Latest-Before" optimization logic test as follows:
 
-1. Gather the complete collection of VCs issued by the Accreditation Body for the specific Facility identifier.
+1. Gather the complete collection of VCs issued by the Accreditation Body for the specific Facility identifier: _completeSet_
 <br>
-1. Filter the collection to include only VCs where:
-<br>
-$$
-T_{\text{validFrom}} \le T_{\text{query}}
-$$
-<br>
-1. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:
-<br>
-$$
-\text{Target VC} = \text{argmax}_{VC} \{ VC.validFrom \mid VC.validFrom \le T_{\text{query}} \}
-$$
+1. Filter the collection to include only VCs that are issued before our query date, so </br> _filteredSet = completeSet where completeSet.validFrom <= T_query_ </br></br>
 
-The returned credential is the one that was current at $T_{\text{query}}$, the time of interest for our query.
+2. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:</br>_targetVC_ = _max_ {_filteredSet.validFrom_}
 
+
+The returned credential is the most recent one that was current at _T_query_, the time of interest for our query.
+_
 ## Conclusion - all states considered
 
 The following is proposed:
 
-1. Reserve the `credentialStatus` setting for the whole of life status value setting and changes. The default is to use two states: `active` and `revoked`.
+1. Reserve the `credentialStatus` setting for temporary current credential changes and  whole of life status value setting. Stick to the standard approach of a single binary value and two states: `active` and `revoked`.
 
 2. Do not delete or edit issued credentials.
 
@@ -265,7 +271,12 @@ The diagram below shows how the flow could work.
 
 
 ```mermaid
-flowchart LR
+---
+config:
+  layout: elk
+title: UNTP IDR and TRQP
+---
+flowchart TD
     A["Int'l Verifier"] -->|"1. Sends TRQP Query<br/>(e.g., 'Authorized at T_query?')"| B["Local TRQP Endpoint (NATA)"]
     
     subgraph Translation ["Local TRQP Translation Engine"]
@@ -308,3 +319,5 @@ By implementing a **UNTP Profile for TRQP**, we can achieve additional benefits 
 [^9]: https://trustoverip.org/
 
 [^10]: https://untp.unece.org/
+
+[^11]: https://untp.unece.org/docs/specification/ConformityCredential
