@@ -5,43 +5,38 @@ title: "Verifiable Credentials Status Over Time"
 
 # Verifiable Credentials Status Over Time
 
-Some mathemetical expressions aren't rendered neatly in the Jekyll rendered html page. Refer to the Markdown original if necessary.
-{: .note }
-
-Thought - Can we make use of the webvh method of a chained hashes for VCs?.
-{: .note }
-
 ## Introduction
 
-The aim of this document is to explore how the elements defined in the UNTP specification[^10] can be used to satisfy both current and historical questions about accreditation credentials.
+The aim of this document is to explore how the elements defined in the UNTP specification[^10] can be used to satisfy both current and historical questions about issued credentials.
 
-This document is focused on the topic of life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This focus is used to simplify and give context to the discussion. We believe that the design principles presented here can be applied to other types of credentials and other contexts. 
+The origin of this document was a discussion on life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This discussion gave rise to the general observation and the belief that the design principles presented here can be applied to other types of credentials and other contexts. 
 
-Of particular interest are how might we use UNTP to determine questions like:
+Of particular interest are how might we use the UNTP specification (which contains specifications for verifiable credential data structures as well as use case models for their use, discovery, resolution, and verification) to answer questions like:
 -  **"was product X tested to standards Y by a lab accredited to test them, in year Z?"**
 -  **"was organisation X registered by an authoritative registrar of country Y in year Z?"**
 
 ## Example
 
-We'll use a simple model, but one that is expressive enough to be extended to other arrangements of regulators, accreditations bodies, global accreditations bodies, and conformity assessment bodies.
+Taking our lab based example, we can build a supply chain use case as follows:
 
-Our simple supply chain use case is as follows:
-
-1. In Year-01, An Accreditation Body (AB) accredits a testing facility (TF) \- a lab for steel testing: the accreditation has a unique reference, "AC1". In UNTP terms, the accreditation is issued as a Digital Identity Anchor (DIA)
+1. In Year-01, An Accreditation Body (AB) accredits a testing facility (TF). TF is a lab that performs steel testing. The accreditation has a unique reference, "AC1". 
+<br>In UNTP terms, the accreditation is issued as a Digital Identity Anchor (DIA)
 <br>
 
-2. In Year-02, A Steel Manufacturer (SM) makes a green steel product, GREEN001, and gets a batch tested by the Testing Facility.
-   
-   2.1. The Testing Facility issues a (positive) conformity assessment (CA1) for GREEN001 against criteria that they are accredited to test against and that are applicable for GREEN001's intended use as a reinforced steel used in building. In UNTP terms, the conformity assessment is issued as a Digital Conformity Credential (DCC). 
+1. In Year-02, A Steel Manufacturer (SM) makes a green steel product, GREEN001, and gets a batch tested by the Testing Facility (TF). The Testing Facility issues a (positive) conformity assessment (CA1) for GREEN001 against criteria that they are accredited to test against and that are applicable for GREEN001's intended use as a reinforced steel used in building.
+<br>In UNTP terms, the conformity assessment is issued as a Digital Conformity Credential (DCC). 
 <br>
 
-3. In Year-03, the Steel Manufacturer sells a batch of the tested GREEN001 steel product to a customer, a prime contractor (PC) that uses it to build an office block (B1). In UNTP terms, a Digital Product Passport (DPP) would be issued and would be referenced in the delivery documentation and (possibly) through on-product labelling (e.g. QR code).
+1. In Year-03, the Steel Manufacturer sells a batch of the tested GREEN001 steel product to a customer, a prime contractor (PC) that uses it to build an office block (B1). 
+<br>In UNTP terms, a Digital Product Passport (DPP) would be issued and would be referenced in the delivery documentation and (possibly) through on-product labelling (e.g. QR code).
 <br>
 
-4. In Year-10 the Testing Facility changes business models and switches away from testing this type of steel. Its AC1 accreditation is withdrawn voluntarily and it applies, successfully, for new accreditation, AC2, in Year-11.
+1. In Year-10 the Testing Facility changes business models and switches away from testing this type of steel. Its AC1 accreditation is withdrawn voluntarily and it applies, successfully, for new accreditation, AC2, in Year-11.
+<br>This is the step we want to explore in this document in terms of UNTP use patterns.
 <br>
 
-5. In Year-14, a new building inspector wants to know whether the building (B1) can genuinely claim its "green" status. They want to know: "Was the steel used in this building a certified green steel. If so, who certified it, to what standards, and were they accredited for that certification by a recognised accreditation body **11 YEARS AGO**.
+1. In Year-14, a new building inspector wants to know whether the building (B1) can genuinely claim its "green" status. They want to know: "Was the steel used in this building a certified green steel. If so, who certified it, to what standards, and were they accredited for that certification by a recognised accreditation body **11 YEARS AGO**.
+<br>This is the query that we want to be able to answer using the approach we define in the previous step.
 <br>
 
 If we consider these two accreditation certificates to be "AC1" and "AC2", and we make Year-01 equal "2012", we might draw a timeline as shown below:
@@ -64,7 +59,9 @@ gantt
 
 This use case is reasonably common in the building sector. Changes to regulations and/or sales and transfer of ownership can mean that a building inspector needs to know what materials used and how the building was constructed. If the building records are uncertain or incomplete when changes in regulations occur (say), then the current practice is to explore these questions through a human expert led and supported initiative. Authoritative institutions and people are asked questions and evidence in the form of paper documents is gathered.
 
-Revisiting our question: we want to explore whether, using UNTP, we can enable a trustworthy, transparent, **verifiable history**. We want the UNTP verifiable credentials to provide the same or greater confidence as the human expert response based on archival records. We want the result to be supported by cryptographically protected records issued by the authoritative body and, to the extent possible, the results be algorithmically determinable.
+There are many other such instances of historical query. For example, the forensic analysis of product failures after they have been in the market and in use for a period of time would demand knowing who produced the product(s) with what materials and who performed the tests and to what standards.
+
+Revisiting our question we can use more general terms: we want to explore whether, using UNTP, we can enable a trustworthy, transparent, **verifiable history**. We want the UNTP verifiable credentials to provide the same or greater confidence as the human expert response based on archival records. We want the result to be supported by cryptographically protected records issued by the authoritative body and, to the extent possible, the results be algorithmically determinable.
 
 ## Prior work \- Conformity Exchange
 
@@ -72,11 +69,9 @@ Section 4.2 of the UN/CEFACT white paper on conformity exchange[^1] "Management 
 
 > Regardless, one important principle when dealing with management of conformity data lifecycle is that the issuer of the attestation be recognised as retaining authority over the attestation, in order to provide certainty over the state (e.g., withdrawal, amendment, expiry) of an attestation over its valid lifetime.
 
-Absent from the discussion in this section is a consideration of how to manage and present historical data.
+Section 6.5.6 of the UN/CEFACT Business Requirements Specification (BRS) "Digital Product Conformity Certificate Exchange"[^2] discusses Attestation Status. However this section does not discuss how to manage changes and present historic time-based values.
 
-Section 6.5.6 of the UN/CEFACT Business Requirements Specification (BRS) "Digital Product Conformity Certificate Exchange"[^2] discusses Attestation Status. Again, absent from this section is a consideration of historic values.
-
-Annex 5 of the same document contains a life cycle diagram as a state transition diagram. The diagram is reproduced below showing each state and the transitions between them:
+Annex 5 of the BRS contains a life cycle diagram as a state transition diagram. The diagram is reproduced below showing each state and the transitions between them:
 
 ```mermaid
 ---
@@ -94,15 +89,19 @@ stateDiagram
   Withdrawn --> [*]
 ```
 
-If we consider our example use case, the credential issued 11 years ago goes from `Current` to `Withdrawn` 4 years ago when the certificate became no longer valid as the lab no longer performs the same tests on steel. However, at no time (in our example) is the certificate in a `Suspended` state. 
+If we consider that we are in the year 2026, and we take our example use case, the AC1 credential issued 11 years ago goes from `Current` to `Withdrawn` 4 years ago when the certificate became no longer valid as the lab no longer performs the same tests on steel. However, at no time (in our example) is the certificate in a `Suspended` state. 
 
-The operating practice of Accreditation Bodies is to display the current state of credentials. So in 2026, the status of AC1 would be `withdrawn` and AC2 would be `current`. Further, the information presented may be limited to the current state, the date on which that state was registered, and the original issued date. This means that it is not possible to determine when previous state changes ocurred and for how long the accreditation was in that state. 
+We have two types of problem to solve:
 
-Further, Accreditation bodies do not display the full history of all accreditations ever issued. Historical searches typically demand contacting the Accreditation Body directly. It is unlikely that an Accreditation Body search would provide more than the statutory (legally) specified range of history an may choose to only present a subset of this history, the last 5 years (say).
+1. **Current only Presentation**: The operating practice of Accreditation Bodies is to display the current state of credentials. So in 2026, the status of AC1 would be `withdrawn` and AC2 would be `current`. Further, the information presented may be limited to just the current state, the date on which that state was registered, and the original issued date. This presentation would mean that it is not possible to determine when any previous state changes ocurred and for how long the accreditation was in that state. 
+
+2. **Limited Records Kept**: Issuers of records may not keep a full record of all things they have ever issued. For example, accreditation bodies do not display, nor be legally obliged to keep, the full history of all accreditations ever issued. An issuer might only store the statutory (legally) specified range of history (7 years say), and may choose to only present a subset of this history, the last 5 years (say) for searches.
 
 ## UNTP Elements
 
-The UNTP credential identified for use as an Accreditation Credential is the Digital Identity Anchor[^3]. This is for the instance where a national accreditation body recognises ("accredits") an organisation that provides conformity assessments. In the UNTP 0.7 specification, an accredited Conformity Assessment Body (CAB) is expected to issue a Conformancy Credential[^11]. 
+This conversation focuses on the Digital Identity Anchor from the UNTP specification, but can be generalised to all UNTP credentials (and possibly all VCs).
+
+The UNTP credential identified for use as an Accreditation Credential is the Digital Identity Anchor[^3]. This can be used in the following way: a national accreditation body recognises ("accredits") an organisation that passes required tests (demonstrated required capabilities) as a Conformity Assessment Body (CAB) by issuing a DIA. The recognised (accredited) Conformity Assessment Body (CAB) would then issue UNTP Conformancy Credentials[^11] to those organisations who meet the required conformity standards for the credential to be issued. 
 
 The Digital Identity Anchor and Conformity Credential contain the same key elements needed for this discussion:
 
@@ -110,7 +109,7 @@ The Digital Identity Anchor and Conformity Credential contain the same key eleme
 - `validUntil`  
 - `credentialStatus`
 
-The `validFrom` and `validUntil` fields are date fields. UNTP does not require either field to contain a value (they are not mandatory). The use of these fields is mapped to the Issuer's standard operating practice on issuing a Credential.
+The `validFrom` and `validUntil` fields are date fields. UNTP does not require either field to contain a value (they are not mandatory). The use of these fields is defined by the Issuer's standard operating practice on issuing a Credential.
 
 A common use pattern is that the value of the `validFrom` field is set to the date on which accreditation is recognised, and the `validUntil` field is left blank (or "null") as the recognition does not have a preset expiry date.
 
@@ -118,13 +117,13 @@ The `credentialStatus` field uses the W3C VC `bitStringStatus` approach to manag
 
 ### W3C VC status representation
 
-The `bitStringStatus` field is a standard W3C Verifiable Credential Data Model construct[^4]. The controlling specification for the use of the `bitStringStatusList` is "Bitstring Status List v1.0, Privacy-preserving status information for Verifiable Credentials" W3C Recommendation 15 May 2025: [https://www.w3.org/TR/vc-bitstring-status-list/](https://www.w3.org/TR/vc-bitstring-status-list/).
+The `bitStringStatus` field is a standard W3C Verifiable Credential Data Model construct[^4]. The controlling specification for the use of the `bitStringStatusList` when this paper was written is "Bitstring Status List v1.0, Privacy-preserving status information for Verifiable Credentials" W3C Recommendation 15 May 2025: [https://www.w3.org/TR/vc-bitstring-status-list/](https://www.w3.org/TR/vc-bitstring-status-list/).
 
 Most implementations of the W3C VC Data Model use a single-bit status allowing a binary value to be represented (on/off, valid/not valid, revoked/active etc.). The W3C standard allows for more than one bit to be used to represent the status of each issued credential by setting the `statusSize` value greater than 1. If the `statusSize` attribute is set to a value greater than 1 then the property `credentialStatus.statusMessage` MUST also be present and the number of status messages MUST equal the number of possible values. In other words, we can have more than a binary value for status, but if we do, we must define what each value means.
 
 For example, if we set `statusSize` to 2 bits for the status we get 4 possible states. So, we could have:
 
-| Binary (2 bits) | Hex Value | Accreditation State and example cause                    |
+| Binary (2 bits) | Hex Value | Accreditation State and example cause           |
 |:--------------- |:--------- |:----------------------------------------------- |
 | 00              | 0x0       | Active (The initially awarded state)            |
 | 01              | 0x1       | Suspended (Temporarily invalid)                 |
@@ -203,10 +202,10 @@ When a verifier queries the Identity Resolver (IDR) for historical date _T_query
 
 1. Gather the complete collection of VCs issued by the Accreditation Body for the specific Facility identifier: _completeSet_
 <br>
-1. Filter the collection to include only VCs that are issued before our query date, so <br>_filteredSet = completeSet where completeSet.validFrom <= T_query_ 
+1. Filter the collection to include only VCs that are issued before our query date, so <br>_filteredSet _=_ completeSet **where** completeSet.validFrom <= T_query_ 
 <br>
 
-2. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:<br>_targetVC_ = _max_ {_filteredSet.validFrom_}
+1. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:<br>_targetVC_ = _max_ {_filteredSet.validFrom_}
 
 
 The returned credential is the most recent one that was current at _T_query_, the time of interest for our query.
@@ -215,13 +214,15 @@ The returned credential is the most recent one that was current at _T_query_, th
 
 The following is proposed:
 
-1. Reserve the `credentialStatus` setting for temporary current credential changes and  whole of life status value setting. Stick to the standard approach of a single binary value and two states: `active` and `revoked`.
+1. Use the `credentialStatus` as a single binary value with two possible states: `active` and `revoked` and only for the two use cases:
+   1. **Recommended**: temporary current credential changes, and
+   2. **Optional**: whole of life status value setting for historical corrections. This use would require governance and documentation
 
 2. Do not delete or edit issued credentials.
 
-3. Issue a new credential when a change of status occurs.
+3. Issue a new credential whenever a change of status occurs. Note that this logically will occur whenever the `credentialStatus` changes as well as if any other status change occurs. The `credentialStatus` allows for a rapid "valid now?" query but doesn't support historical record management. 
 
-4. Support verifiers who need to know past values by using IDR to generate a linkset of previous credentials.
+4. Support verifiers who need to know past values by using the UNTP IDR to generate a linkset of previous credentials.
 
 
 ---
