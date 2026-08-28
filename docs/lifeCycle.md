@@ -171,7 +171,7 @@ Returning to our use pattern for the `validFrom` and `validUntil` fields we migh
 
 The expected practice and use of verifiable credentials is that they are immutable records once issued. This reflects their usual use pattern where they are issued to a wallet under the control of the holder and the issuer has control over the wallet content.
 
-Changing the content of a VC and resigning it breaks the W3C VC expectation that VCs are immutable records and means that the signature value, while valid for the new content and the key used, has changed. Such changes could impact cached records and cause red-flags for observant verifiers. As a side note, editing the verifiable credential also makes the digital experience differ from the existing physical experience when a physical (or PDF) copy of an accreditation credential would be sent to a Facility with the issue date and no expiry date. This would then be stored by the Facility and becomes, to an extent, an immutable record. 
+Changing the content of a VC and resigning it breaks the W3C VC convention that VCs are immutable records and means that the signature value, while valid for the new content and the key used, has changed. Such changes could impact cached records and cause red-flags for observant verifiers. As a side note, editing the verifiable credential also makes the digital experience differ from the existing physical experience when a physical (or PDF) copy of an accreditation credential would be sent to a Facility with the issue date and no expiry date. This would then be stored by the Facility and becomes, to an extent, an immutable record. 
 
 Basically, if we issued the credential with a blank `validUntil` field, it should stay blank.
 
