@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Verifiable Credentials Status Over Time"
+title: "Verifiable Credentials Status History"
 ---
 
-# Verifiable Credentials Status Over Time
+# Verifiable Credentials Status History
 
 ## Introduction
 
