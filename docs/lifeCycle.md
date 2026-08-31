@@ -1,10 +1,8 @@
 ---
 layout: default
-title: "Verifiable Credentials Status History"
+title: "Beyond 'Right Now': Managing Credential Lifeycle History in the UNTP Ecosystem"
 math: true
 ---
-
-# Verifiable Credentials Status History
 
 ## Introduction
 
