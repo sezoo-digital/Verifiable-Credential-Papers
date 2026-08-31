@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Beyond 'Right Now': Managing Credential Lifeycle History in the UNTP Ecosystem"
+title: "Beyond 'Right Now': Managing Credential Lifecycle History in the UNTP Ecosystem"
 math: true
 ---
 
-# Beyond 'Right Now': Managing Credential Lifeycle History in the UNTP Ecosystem
+# Beyond 'Right Now': Managing Credential Lifecycle History in the UNTP Ecosystem
 
 ## Introduction
 
