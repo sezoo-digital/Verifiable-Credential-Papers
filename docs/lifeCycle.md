@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Verifiable Credentials Status History"
+math: true
 ---
 
 # Verifiable Credentials Status History
