@@ -161,7 +161,7 @@ The historical timeline is managed by appending the new credential to the IDR's 
 
 ### The "Latest-Before" Algorithimic Lookup
 
-When a verifier queries the Identity Resolver for the status of an entity at a specific past timestamp ($T_{\text{query}}$), the resolver applies a Latest-Before selection algorithm:
+When a verifier queries the Identity Resolver for the status of an entity at a specific past timestamp ($$T_{\text{query}}$$), the resolver applies a Latest-Before selection algorithm:
 
 1. **Retrieve Collection:** Gather all VCs issued for the target facility identifier:
 
@@ -175,7 +175,7 @@ $$\text{FilteredSet} = \{ VC \in \text{CompleteSet} \mid VC.\text{validFrom} \le
 
 $$VC_{\text{target}} = \arg\max_{VC \in \text{FilteredSet}} (VC.\text{validFrom})$$
 
-The resulting $VC_{\text{target}}$ represents the exact operational status active at timestamp $T_{\text{query}}$.
+The resulting $$VC_{\text{target}}$$ represents the exact operational status active at timestamp $$T_{\text{query}}$$.
 
 ## Conclusion & Architectural Rules
 
