@@ -4,6 +4,8 @@ title: "Beyond 'Right Now': Managing Credential Lifeycle History in the UNTP Eco
 math: true
 ---
 
+# Beyond 'Right Now': Managing Credential Lifeycle History in the UNTP Ecosystem
+
 ## Introduction
 
 This document explores how elements defined in the UN Transparency Protocol (UNTP) specification[^1] satisfy both current and historical queries about issued credentials.
