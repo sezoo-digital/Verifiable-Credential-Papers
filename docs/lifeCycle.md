@@ -11,7 +11,7 @@ This document explores how elements defined in the UN Transparency Protocol (UNT
 
 This paper originated from discussions on lifecycle management for accreditation credentials issued by Accreditation Bodies (ABs) to Conformity Assessment Bodies (CABs), such as testing laboratories. The design principles presented here apply broadly across credential types and domain contexts.
 
-Specifically, this paper demonstrates how the UNTP framework—which specifies data structures for Verifiable Credentials (VCs) as well as operational models for discovery, resolution, and verification—answers point-in-time historical questions such as:
+Specifically, this paper demonstrates how the UNTP framework - which specifies data structures for Verifiable Credentials (VCs) as well as operational models for discovery, resolution, and verification - answers point-in-time historical questions such as:
 - **"Was Product X tested to Standard Y by a lab accredited to test it in Year Z?"**
 - **"Was Organization X registered by an authoritative registrar of Country Y in Year Z?"**
 
@@ -144,11 +144,12 @@ The UNTP Identity Resolver (IDR)[^7] provides the necessary architectural capabi
 
 The IDR enables the UNTP `Discover → Resolve → Verify` workflow and natively supports versioned targets[^8].
 
-```text
-[ Identifier Query ] ──> UNTP IDR ──> Returns IETF Linkset
-                                           │
-                                           ├──> Current Credential (AC2)
-                                           └──> Version History Array [AC1, AC2]
+```mermaid
+flowchart LR
+    A["Identifier Query"] --> B["UNTP IDR"]
+    B --> C["Returns IETF Linkset"]
+    C --> D["Current Credential (AC2)"]
+    C --> E["Version History Array [AC1, AC2]"]
 ```
 
 ### State Transitions as New Signed Artifacts
