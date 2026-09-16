@@ -18,7 +18,7 @@ Specifically, this paper demonstrates how the UNTP framework - which specifies d
 
 ---
 
-## Example Scenario: The Green Steel Supply Chain
+Taking our lab based example, we can build a supply chain use case over time as follows:
 
 Consider the following multi-year supply chain lifecycle:
 
@@ -81,19 +81,7 @@ When evaluating this lifecycle against historical queries in 2026, two key opera
 
 ## UNTP Core Elements
 
-In the UNTP framework, accreditation is modeled by an Accreditation Body issuing a **Digital Identity Anchor (DIA)**[^4] to a Conformity Assessment Body (CAB). The accredited CAB then issues **Digital Conformity Credentials (DCCs)**[^5] to products or organizations meeting specified standards.
-
-Both DIAs and DCCs contain three key validity properties:
-
-- `validFrom` (ISO timestamp)
-
-- `validUntil` (ISO timestamp)
-
-- `credentialStatus` (Status definition object)
-
-The `validFrom` and `validUntil` fields are optional. A standard operational pattern is to set `validFrom` to the recognition date while leaving `validUntil` null, as accreditations are typically open-ended until revoked or updated.
-
-### W3C VC status representation
+## W3C VC status representation
 
 UNTP leverages the W3C **Bitstring Status List v1.0 specification**[^6] for managing `credentialStatus`. While many systems use a 1-bit status (representing a binary 0 = Active or 1 = Revoked), the specification supports multi-bit status allocations (`statusSize` > 1) to express complex states alongside a `statusMessage` array.
 
@@ -163,9 +151,9 @@ The historical timeline is managed by appending the new credential to the IDR's 
 
 When a verifier queries the Identity Resolver for the status of an entity at a specific past timestamp ($$T_{\text{query}}$$), the resolver applies a Latest-Before selection algorithm:
 
-1. **Retrieve Collection:** Gather all VCs issued for the target facility identifier:
+## Validity Periods: from and until
 
-$$\text{CompleteSet} = \{ VC_1, VC_2, \dots, VC_n \}$$
+Returning to our use pattern for the `validFrom` and `validUntil` fields we might be tempted to update the `validUntil` field to specify a time bound limit for a credential that we have previously issued and that we now know has a specific end date. This is _technically_ possible because, in the UNTP model, the "issuer" retains control of the VC (keeps the record within their own controlled space rather than sending (issuing) it a remote "Holder" wallet outside of their control). Changing and re-signing is technically possible, but it is **not** recommended.
 
 2. **Filter by Start Timestamp:** Filter the collection to include only credentials issued on or before the target date:
 
@@ -185,7 +173,42 @@ To deliver a cryptographically verifiable history while respecting W3C standards
 
 2. **Preserve Credential Immutability:** Never edit, overwrite, or re-sign previously issued credentials.
 
-3. **Issue New Credentials for State Changes:** Treat every status change (Active, Suspended, Withdrawn) as a distinct, cryptographically signed event with a new `validFrom` timestamp.
+- Registry-managed identifiers (e.g. Accreditation References, GTINs or location codes etc. assigned by authorities)  
+- Self-assigned identifiers, such as DIDs (Decentralised Identifiers) controlled by the entity itself
+
+This is the enabling capability of the UNTP IDR specification: it supports **version history**[^6]. We can see an example in the UNTP specification at version `0.7.0` which considers a Digital Product Passport, but the IDR approach will work for all UNTP credentials. 
+
+Returning to our use case above, this means that a query on the Accreditation held by the Testing Facility (TF) will return the current credential (AC2) and, *if requested*, the full linked history of previous credentials, including AC1.
+
+Expanding on this logic further. In the context of Accreditations, "Suspended" or "Withdrawn" are explicit legal changes, and we must cryptographically sign any new statement. We cannot represent a suspension simply by deleting the old VC; we must issue a new record where the `credentialSubject.status` value equals `suspended`.
+
+We can explore how this might work from an algorithmic test point of view.
+
+When a verifier queries the Identity Resolver (IDR) for historical date _T_query_, the resolver must execute a "Latest-Before" optimization logic test as follows:
+
+1. Gather the complete collection of VCs issued by the Accreditation Body for the specific Facility identifier: _completeSet_
+<br>
+1. Filter the collection to include only VCs that are issued before our query date, so <br>_filteredSet _=_ completeSet **where** completeSet.validFrom <= T_query_ 
+<br>
+
+1. From that filtered subset, select the single VC that possesses the maximum validFrom timestamp:<br>_targetVC_ = _max_ {_filteredSet.validFrom_}
+
+
+The returned credential is the most recent one that was current at _T_query_, the time of interest for our query.
+
+## Conclusion - all states considered
+
+The following is proposed:
+
+1. Do not delete or edit issued credentials.
+
+2. Use the `credentialStatus` as a single binary value with two possible states: `active` and `revoked` and only for the two use cases:
+   2.1. **Recommended**: temporary current credential changes, and
+   2.2. **Optional**: whole of life status value setting for historical corrections. This use would require governance and transparent documentation
+
+3. _NEW_. 
+
+4. _NEW_.
 
 4. **Leverage the IDR for Historical Traversal:** Use the UNTP Identity Resolver to host versioned linksets, enabling verifiers to deterministically reconstruct historical trust graphs using the "Latest-Before" algorithm.
 
@@ -220,33 +243,7 @@ TRQP v2.0 includes a standardized `context.time` parameter (formatted to RFC 333
 
 ### Coexistence of UNTP IDR and TRQP
 
-TRQP does not replace the UNTP IDR; rather, it acts as an interoperability wrapper around the IDR resolution engine:
-
-
-```mermaid
----
-config:
-  layout: elk
-title: UNTP IDR and TRQP
----
-flowchart TD
-    A["External Verifier"] -->|"1. TRQP Query (Time: T_query)"| B["TRQP Endpoint"]
-    
-    subgraph Translation ["Local TRQP Translation Engine"]
-        B --> C["2. Fetch History from UNTP IDR"]
-        C --> D["3. Apply 'Latest-Before' Logic"]
-        D --> E{"Status Active at T_query?"}
-    end
-    
-    E -->|"Yes"| F["Map to: 'authorized'"]
-    E -->|"No"| G["Map to: 'not_authorized'"]
-
-    F -->|"4a. Status: 'authorized'"| A
-    G -->|"4b. Status: 'not_authorized'"| A
-```
-
-
-By placing a TRQP interface in front of the UNTP IDR, external systems (such as customs platforms or trade finance applications) can execute historical audits without needing to parse custom JSON schemas or manually evaluate credential linksets.
+_NEED TO ADD MATERIAL HERE TO REPLACE SUPERCEDED CONTENT_
 
 ---
 **References**
