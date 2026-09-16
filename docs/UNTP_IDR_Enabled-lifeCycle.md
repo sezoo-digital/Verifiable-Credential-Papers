@@ -1,28 +1,23 @@
 ---
 layout: default
-title: "Verifiable Credentials Status Over Time"
+title: "Verifiable Credentials Status Over Time using UNTP IDR"
 ---
 
 # Verifiable Credentials Status Over Time
 
 ## Introduction
 
-The aim of this document is to explore how to satisfy both current and historical questions about issued verifiable credentials.
+The aim of this document is to explore how the elements defined in the UNTP specification[^10] can be used to satisfy both current and historical questions about issued credentials.
 
-An earlier version of this paper constrained the solution space to the elements that were defined for UNTP Version 0.7. While this paper is still focused on solutions relevant to the UN/CEFACT work on global supply chain transparency, this paper is not restricted to the elements already defined in UNTP.
+The origin of this document was a discussion on life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This discussion gave rise to the general observation and the belief that the design principles presented here can be applied to other types of credentials and other contexts. 
 
-The origin of this work was a discussion on life cycle management for accreditation credentials issued by accreditation bodies to testing facilities (e.g. labs). This discussion gave rise to the general observation and the belief that the design principles presented here can be applied to other types of credentials and other contexts.
-
-Subsequent discussion introduced the work of the W3C on Recognized Entities and the use of Cryptographic Event Logs. These discussions opened a new set of potential solution spaces and a new document (this document) was produced.
-
-Of particular interest are how might use queries on verifiable credentials and supporting evidence to answer questions like:
-
+Of particular interest are how might we use the UNTP specification (which contains specifications for verifiable credential data structures as well as use case models for their use, discovery, resolution, and verification) to answer questions like:
 -  **"was product X tested to standards Y by a lab accredited to test them, in year Z?"**
 -  **"was organisation X registered by an authoritative registrar of country Y in year Z?"**
 
 ## Example
 
-Taking our lab based example, we can build a supply chain use case over time as follows:
+Taking our lab based example, we can build a supply chain use case as follows:
 
 1. In Year-01, An Accreditation Body (AB) accredits a testing facility (TF). TF is a lab that performs steel testing. The accreditation has a unique reference, "AC1". 
 <br>In UNTP terms, the accreditation is issued as a Digital Identity Anchor (DIA)
@@ -102,7 +97,25 @@ We have two types of problem to solve:
 
 2. **Limited Records Kept**: Issuers of records may not keep a full record of all things they have ever issued. For example, accreditation bodies do not display, nor be legally obliged to keep, the full history of all accreditations ever issued. An issuer might only store the statutory (legally) specified range of history (7 years say), and may choose to only present a subset of this history, the last 5 years (say) for searches.
 
-## W3C VC status representation
+## UNTP Elements
+
+This conversation focuses on the Digital Identity Anchor from the UNTP specification, but can be generalised to all UNTP credentials (and possibly all VCs).
+
+The UNTP credential identified for use as an Accreditation Credential is the Digital Identity Anchor[^3]. This can be used in the following way: a national accreditation body recognises ("accredits") an organisation that passes required tests (demonstrated required capabilities) as a Conformity Assessment Body (CAB) by issuing a DIA. The recognised (accredited) Conformity Assessment Body (CAB) would then issue UNTP Conformancy Credentials[^11] to those organisations who meet the required conformity standards for the credential to be issued. 
+
+The Digital Identity Anchor and Conformity Credential contain the same key elements needed for this discussion:
+
+- `validFrom`  
+- `validUntil`  
+- `credentialStatus`
+
+The `validFrom` and `validUntil` fields are date fields. UNTP does not require either field to contain a value (they are not mandatory). The use of these fields is defined by the Issuer's standard operating practice on issuing a Credential.
+
+A common use pattern is that the value of the `validFrom` field is set to the date on which accreditation is recognised, and the `validUntil` field is left blank (or "null") as the recognition does not have a preset expiry date.
+
+The `credentialStatus` field uses the W3C VC `bitStringStatus` approach to managing credential status. We'll explore that in the next section and then return to the `validFrom` and `validUntil` fields.
+
+### W3C VC status representation
 
 The `bitStringStatus` field is a standard W3C Verifiable Credential Data Model construct[^4]. The controlling specification for the use of the `bitStringStatusList` when this paper was written is "Bitstring Status List v1.0, Privacy-preserving status information for Verifiable Credentials" W3C Recommendation 15 May 2025: [https://www.w3.org/TR/vc-bitstring-status-list/](https://www.w3.org/TR/vc-bitstring-status-list/).
 
@@ -152,9 +165,9 @@ We **could** use the `bitStringStatus` for two main purposes:
 
 This can be useful applications, but we need to explore other methods to achieve our verifiable history.
 
-## Validity Periods: from and until
+### Validity Periods: from and until
 
-Returning to our use pattern for the `validFrom` and `validUntil` fields we might be tempted to update the `validUntil` field to specify a time bound limit for a credential that we have previously issued and that we now know has a specific end date. This is _technically_ possible because, in the UNTP model, the "issuer" retains control of the VC (keeps the record within their own controlled space rather than sending (issuing) it a remote "Holder" wallet outside of their control). Changing and re-signing is technically possible, but it is **not** recommended.
+Returning to our use pattern for the `validFrom` and `validUntil` fields we might be tempted to update the `validUntil` field to specify a time bound limit for a credential that we have previously issued and that we now know has a specific end date. This is _technically_ possible because, in the UNTP model, the "issuer" retains control of the VC (keeps the record within their own controlled space rather than sending (issuing) it a remote "Holder" wallet outside of their control). Changing and re-signing is technically possible, but it is not recommended.
 
 The expected practice and use of verifiable credentials is that they are immutable records once issued. This reflects their usual use pattern where they are issued to a wallet under the control of the holder and the issuer has control over the wallet content.
 
@@ -201,15 +214,15 @@ The returned credential is the most recent one that was current at _T_query_, th
 
 The following is proposed:
 
-1. Do not delete or edit issued credentials.
+1. Use the `credentialStatus` as a single binary value with two possible states: `active` and `revoked` and only for the two use cases:
+   1. **Recommended**: temporary current credential changes, and
+   2. **Optional**: whole of life status value setting for historical corrections. This use would require governance and documentation
 
-2. Use the `credentialStatus` as a single binary value with two possible states: `active` and `revoked` and only for the two use cases:
-   2.1. **Recommended**: temporary current credential changes, and
-   2.2. **Optional**: whole of life status value setting for historical corrections. This use would require governance and transparent documentation
+2. Do not delete or edit issued credentials.
 
-3. _NEW_. 
+3. Issue a new credential whenever a change of status occurs. Note that this logically will occur whenever the `credentialStatus` changes as well as if any other status change occurs. The `credentialStatus` allows for a rapid "valid now?" query but doesn't support historical record management. 
 
-4. _NEW_.
+4. Support verifiers who need to know past values by using the UNTP IDR to generate a linkset of previous credentials.
 
 
 ---
@@ -252,7 +265,40 @@ This means that instead of a bespoke processing on the IDR response, a time-base
 
 The TRQP endpoint processes the query, evaluates the historical states (interacting with the UNTP IDR log layer), and returns a standardized trust status (`authorized`, `not_authorized`, say) for the requested moment in time.
 
-_NEED TO ADD MATERIAL HERE TO REPLACE SUPERCEDED CONTENT_
+### How UNTP IDR and TRQP Might Coexist
+
+TRQP would not replace the UNTP Identity Resolver (IDR) or the core Digital Identity Anchor (DIA) structures; rather, it would act as an **API interoperability surface** wrapped around them.
+
+The diagram below shows how the flow could work.
+
+
+```mermaid
+---
+config:
+  layout: elk
+title: UNTP IDR and TRQP
+---
+flowchart TD
+    A["Int'l Verifier"] -->|"1. Sends TRQP Query<br/>(e.g., 'Authorized at T_query?')"| B["Local TRQP Endpoint (NATA)"]
+    
+    subgraph Translation ["Local TRQP Translation Engine"]
+        B --> C["2. Parses Custom History<br/>('Latest-Before' Logic)"]
+        C --> D["3. Evaluates VC terms based on local legal logic"]
+        D --> E{"State active & valid<br/>at T_query?"}
+    end
+    
+    E -->|"Yes (e.g., 'Active')"| F["Map to: 'authorized'"]
+    E -->|"No (e.g., 'Voluntary Pause', 'Suspended')"| G["Map to: 'not_authorized'"]
+
+    F -->|"4a. Returns Status: 'authorized'"| A
+    G -->|"4b. Returns Status: 'not_authorized'"| A
+```
+
+
+
+### Architectural Alignment
+
+By implementing a **UNTP Profile for TRQP**, we can achieve additional benefits for UNTP users. TRQP can act as an alternative query path. External software platforms (like corporate ERPs, banks, and customs systems) do not need to understand the internal mechanics of the UNTP IDR or parse complex JSON schemas natively. They use a standard, read-only TRQP query to the registry surface. The registry uses its internal UNTP IDR routing infrastructure to evaluate immutable, issuer-controlled VCs over a historical graph timeline - returning a simple, safe, and cryptographically sound response.
 
 ---
 
