@@ -59,18 +59,28 @@ While Section 6.5.6 of the UN/CEFACT Business Requirements Specification (BRS)[^
 
 ```mermaid
 ---
+config:
+  layout: elk
 title: State Transition Diagram for Accreditations
 ---
-stateDiagram
+stateDiagram-v2
   direction TB
-  [*] --> Current:Accreditation requirements met
-  Current --> Suspended:Requirements</br>not met
-  Current --> Withdrawn:No longer valid (e.g. replacement version issued)
-  Current --> Expired:For time-limited attestations only
-  Suspended --> Current:Requirements</br>met
-  Suspended --> Withdrawn:Failure to resolve suspension
-  Expired --> Withdrawn:Based on CAB policies or <br/>if otherwise rendered historically invalid
-  Withdrawn --> [*]
+  %% define states
+  C: Current
+  S: Suspended
+  X: Expired
+  W: Withdrawn
+
+  %% transitions
+  [*] --> C:Accreditation requirements met
+  C --> C : Periodic recheck
+  C --> S : Requirements</br>not met
+  C --> W : No longer valid (e.g. replacement version issued)
+  C --> X : For time-limited attestations only
+  S --> C : Requirements</br>met
+  S --> W : Failure to resolve suspension
+  X --> W : Based on CAB policies or <br/>if otherwise rendered historically invalid
+  W --> [*]
 ```
 
 When evaluating this lifecycle against historical queries in 2026, two key operational barriers arise:
