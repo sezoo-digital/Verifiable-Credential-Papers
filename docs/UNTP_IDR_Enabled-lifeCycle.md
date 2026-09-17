@@ -3,7 +3,13 @@ layout: default
 title: "Verifiable Credentials Status Over Time using UNTP IDR"
 ---
 
-# Verifiable Credentials Status Over Time
+# Superceded - Verifiable Credentials Status Over Time
+
+:::note[Superceded]
+This document was constrained to a solution space given by the UNTP Specification 0.7
+
+A revised consideration of how best to solve this design challenge has been developed, [here](lifeCycle.md)
+:::
 
 ## Introduction
 

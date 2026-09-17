@@ -8,19 +8,20 @@ math: true
 
 ## Introduction
 
-This document explores how elements defined in the UN Transparency Protocol (UNTP) specification[^1] satisfy both current and historical queries about issued credentials.
+This document explores how we might satisfy both current and historical queries about issued credentials. The scope of this exploration is the work of the UN/CEFACT projects on global supply chain transparency, and in particular the UNTP[^1] and GRID[^11] projects. 
 
 This paper originated from discussions on lifecycle management for accreditation credentials issued by Accreditation Bodies (ABs) to Conformity Assessment Bodies (CABs), such as testing laboratories. The design principles presented here apply broadly across credential types and domain contexts.
 
-Specifically, this paper demonstrates how the UNTP framework - which specifies data structures for Verifiable Credentials (VCs) as well as operational models for discovery, resolution, and verification - answers point-in-time historical questions such as:
+An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: (UNTP_IDR_Enabled-lifeCycle.md)[UNTP_IDR_Enabled-lifeCycle.md]
+
+Specifically, this paper considers how we might answer point-in-time historical questions such as:
+
 - **"Was Product X tested to Standard Y by a lab accredited to test it in Year Z?"**
 - **"Was Organization X registered by an authoritative registrar of Country Y in Year Z?"**
 
 ---
 
-Taking our lab based example, we can build a supply chain use case over time as follows:
-
-Consider the following multi-year supply chain lifecycle:
+We can use conformancy testing and application of tested products to build a supply chain use case over time as follows:
 
 1. **Year 01 (2012):** An Accreditation Body (AB) accredits a Testing Facility (TF) that performs steel testing. The accreditation receives a unique reference, **AC1**.
    * *UNTP Model:* The accreditation is issued as a **Digital Identity Anchor (DIA)**.
@@ -48,14 +49,14 @@ gantt
 ### The Historical Query Challenge
 In sectors like construction, changes in ownership or updated regulations frequently trigger historical audits. When paper or digital records are incomplete, organizations must rely on manual, expert-led archival searches.
 
-Using UNTP, we can establish a trustworthy, transparent, **verifiable history**. Rather than relying on manual archival searches, queries can be determined algorithmically using cryptographically protected records issued directly by authoritative bodies.
+With UNTP and associated UN/CEFACT projects, we want to establish a trustworthy, transparent, **verifiable history** so that we can better answer point in time (historical) queries. Rather than relying on manual archival searches, queries can be determined algorithmically using cryptographically protected records issued directly by authoritative bodies.
 
 ## Prior Work: Conformity Exchange
 The UN/CEFACT White Paper on Conformity Exchange[^2] notes that "digitalising status information in the context of conformity attestations warrants further investigation," emphasizing a key lifecycle principle:
 
 > *"The issuer of the attestation [must] be recognised as retaining authority over the attestation, in order to provide certainty over the state (e.g., withdrawal, amendment, expiry) of an attestation over its valid lifetime."*
 
-While Section 6.5.6 of the UN/CEFACT Business Requirements Specification (BRS)[^3] discusses attestation status, it does not define mechanisms for historical time-based queries. Annex 5 of the BRS presents the standard state transition lifecycle:
+While Section 6.5.6 of the UN/CEFACT Business Requirements Specification (BRS)[^3] discusses attestation status, it does not define mechanisms for historical time-based queries. Annex 5 of the BRS presents the standard state transition lifecycle (the periodic recheck process has been added to this representation):
 
 ```mermaid
 ---
@@ -277,3 +278,5 @@ _NEED TO ADD MATERIAL HERE TO REPLACE SUPERCEDED CONTENT_
 [^9]: ToIP Trust Registry Query Protocol (TRQP v2.0): https://trustoverip.github.io/tswg-trust-registry-protocol/approved/
 
 [^10]: Trust Over IP Foundation: https://trustoverip.org/
+
+[^11]: Global Registry Information Directory - GRID: https://grid.unece.org
