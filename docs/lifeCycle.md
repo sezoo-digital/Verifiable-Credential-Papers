@@ -6,13 +6,15 @@ math: true
 
 # Beyond 'Right Now': Managing Credential Lifecycle History in the UNTP Ecosystem
 
+> **Note**
+> An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: [UNTP_IDR_Enabled-lifeCycle.md](UNTP_IDR_Enabled-lifeCycle.md)
+{: .note }
+
 ## Introduction
 
 This document explores how we might satisfy both current and historical queries about issued credentials. The initial focus of this exploration is the work of the UN/CEFACT projects on global supply chain transparency, and in particular the UNTP[^1] and GRID[^11] projects. However the intent is that the approach identified should work in all areas where understanding the history and status of a verifiable credential and its issuer is important. 
 
 The original inspiration for this paper came from discussions on lifecycle management for accreditation credentials issued by Accreditation Bodies (ABs) to Conformity Assessment Bodies (CABs), such as testing laboratories.
-
-An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: [UNTP_IDR_Enabled-lifeCycle.md](UNTP_IDR_Enabled-lifeCycle.md)
 
 Specifically, this paper considers how we might answer point-in-time historical questions such as:
 
