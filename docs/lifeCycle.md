@@ -12,7 +12,7 @@ This document explores how we might satisfy both current and historical queries 
 
 This paper originated from discussions on lifecycle management for accreditation credentials issued by Accreditation Bodies (ABs) to Conformity Assessment Bodies (CABs), such as testing laboratories. The design principles presented here apply broadly across credential types and domain contexts.
 
-An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: (UNTP_IDR_Enabled-lifeCycle.md)[UNTP_IDR_Enabled-lifeCycle.md]
+An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: [UNTP_IDR_Enabled-lifeCycle.md](UNTP_IDR_Enabled-lifeCycle.md)
 
 Specifically, this paper considers how we might answer point-in-time historical questions such as:
 
