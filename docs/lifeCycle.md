@@ -55,9 +55,9 @@ gantt
 ```
 
 ### The Historical Query Challenge
-In sectors like construction, changes in ownership or updated regulations frequently trigger historical audits. When paper or digital records are incomplete, organizations must rely on manual, expert-led archival searches.
+In long-lived product sectors like construction, changes in ownership or updated regulations frequently trigger historical audits. When locally held paper or digital records are incomplete, organizations must rely on manual, expert-led archival searches of the issuing registries. In some instances, original registry records may be checked to confirm if the local copies are accurate.
 
-With UNTP and associated UN/CEFACT projects, we want to establish a trustworthy, transparent, **verifiable history** so that we can better answer point in time (historical) queries. Rather than relying on manual archival searches, queries can be determined algorithmically using cryptographically protected records issued directly by authoritative bodies.
+With UNTP and associated UN/CEFACT projects, we want to establish a trustworthy, transparent, and algorithmically (machine) derivable **verifiable history** so that we can better answer point in time (historical) queries. Rather than relying on manual archival searches, we want to enable queries to be answered using cryptographically protected records issued by authoritative bodies.
 
 ## Prior Work: Conformity Exchange
 The UN/CEFACT White Paper on Conformity Exchange[^2] notes that "digitalising status information in the context of conformity attestations warrants further investigation," emphasizing a key lifecycle principle:
@@ -98,13 +98,11 @@ When evaluating this lifecycle against historical queries in 2026, two key opera
 
 2. **Data Retention Limits:** Issuers are not always legally required or technically configured to publish full historical logs. Registries may only retain records for statutory periods (e.g., 7 years) or display only recent activity.
 
-## UNTP Core Elements
-
 ## W3C VC status representation
 
-UNTP leverages the W3C **Bitstring Status List v1.0 specification**[^6] for managing `credentialStatus`. While many systems use a 1-bit status (representing a binary 0 = Active or 1 = Revoked), the specification supports multi-bit status allocations (`statusSize` > 1) to express complex states alongside a `statusMessage` array.
+The W3C Verifiable Credential Data Model[^12] introduces the **Bitstring Status List v1.0 specification**[^6] for managing `credentialStatus`. While many systems use a 1-bit status (representing a binary 0 = Active or 1 = Revoked), the specification supports multi-bit status allocations (`statusSize` > 1) to express complex states alongside a `statusMessage` array.
 
-For example, a 2-bit status configuration yields four discrete states:
+For example, a 2-bit status configuration and using the NATA defined states yields four discrete values:
 
 | Bin (2 bits) | Hex | State | Description |
 |:--------------- |:--------- |:------------- |:------|
@@ -127,16 +125,19 @@ This could be represented by a `credentialStatus.statusMessage` array as shown b
   ]
 }
 ```
+
 ### The Limitation of Bitstring Status for Historical Audits
 
 Bitstring status lists are designed to answer real-time queries: *"Is this credential valid right now?"*
 
 Because a bitstring list is dynamically fetched at runtime, updating a bit position to reflect a current withdrawal overwrites the previous active status without leaving an inline historical trail inside the credential itself. Therefore, while bitstring status is effective for immediate revocation, it cannot independently resolve historical point-in-time queries.
 
-### Validity Periods and Credential Immutability
-When a credential's operational status changes, an issuer might be tempted to edit the original credential's `validUntil` field and re-sign the file. Because the UNTP architecture uses issuer-hosted storage rather than holder-only wallets, editing a hosted file is technically possible.
+In other words, a bistring status lists alone cannot satisfy our requirements for historical searches. 
 
-However, **editing and re-signing issued credentials violates fundamental Verifiable Credential design principles:**
+### Validity Periods and Credential Immutability
+The UNTP architecture uses issuer-hosted storage rather than issued to holder wallets model. This means that an issuer could, theoretically, edit and resign a credential that they have previously issued, For example, a period of validity could be closed early by editing the original credential's `validUntil` field and re-signing the file.
+
+However, **editing and re-signing issued credentials violates fundamental Verifiable Credential design principles and would introduce several problems:**
 
 - **Immutability:** Verifiable Credentials are cryptographic assertions anchored to a specific moment in time. Altering payload contents changes the digital signature hash.
 
@@ -144,45 +145,13 @@ However, **editing and re-signing issued credentials violates fundamental Verifi
 
 - **Alignment with Physical Conventions:** In the physical world, a paper certificate issued in 2012 remains an unalterable artifact of what was true on that date.
 
-If a credential was issued with a null `validUntil` field, that file should remain permanently untouched. Historical state changes should be handled through external resolution layers.
+This means that if a credential was issued with a null `validUntil` field, that field should remain null, permanently. 
 
-## The UNTP Solution: The Identity Resolver (IDR)
+This means that historical state changes should be handled through some form of external resolution.
 
-The UNTP Identity Resolver (IDR)[^7] provides the necessary architectural capability. The IDR is a web-based service that accepts a machine-readable identifier (e.g., URI, GTIN, or Decentralized Identifier / DID) and returns an IETF Linkset directing the caller to authoritative data.
+## Cryptographic Event Logs
 
-The IDR enables the UNTP `Discover → Resolve → Verify` workflow and natively supports versioned targets[^8].
-
-```mermaid
-flowchart LR
-    A["Identifier Query"] --> B["UNTP IDR"]
-    B --> C["Returns IETF Linkset"]
-    C --> D["Current Credential (AC2)"]
-    C --> E["Version History Array [AC1, AC2]"]
-```
-
-### State Transitions as New Signed Artifacts
-
-When a facility's accreditation status changes (e.g., from Active to Suspended or Withdrawn), the issuer creates and cryptographically signs a **new credential record** detailing the new state and its `validFrom` timestamp.
-
-The historical timeline is managed by appending the new credential to the IDR's version history linkset without altering or deleting the previous records.
-
-### The "Latest-Before" Algorithimic Lookup
-
-When a verifier queries the Identity Resolver for the status of an entity at a specific past timestamp ($$T_{\text{query}}$$), the resolver applies a Latest-Before selection algorithm:
-
-## Validity Periods: from and until
-
-Returning to our use pattern for the `validFrom` and `validUntil` fields we might be tempted to update the `validUntil` field to specify a time bound limit for a credential that we have previously issued and that we now know has a specific end date. This is _technically_ possible because, in the UNTP model, the "issuer" retains control of the VC (keeps the record within their own controlled space rather than sending (issuing) it a remote "Holder" wallet outside of their control). Changing and re-signing is technically possible, but it is **not** recommended.
-
-2. **Filter by Start Timestamp:** Filter the collection to include only credentials issued on or before the target date:
-
-$$\text{FilteredSet} = \{ VC \in \text{CompleteSet} \mid VC.\text{validFrom} \le T_{\text{query}} \}$$
-
-3. **Select Target Instance:** From the filtered subset, select the single credential possessing the maximum validFrom timestamp:
-
-$$VC_{\text{target}} = \arg\max_{VC \in \text{FilteredSet}} (VC.\text{validFrom})$$
-
-The resulting $$VC_{\text{target}}$$ represents the exact operational status active at timestamp $$T_{\text{query}}$$.
+_LOTS TO WRITE HERE_
 
 ## Conclusion & Architectural Rules
 
@@ -229,11 +198,9 @@ The following is proposed:
 
 4. _NEW_.
 
-4. **Leverage the IDR for Historical Traversal:** Use the UNTP Identity Resolver to host versioned linksets, enabling verifiers to deterministically reconstruct historical trust graphs using the "Latest-Before" algorithm.
-
 ---
 
-# Appendix A \- Possible future integration with TRQP?
+# Appendix A - Possible future integration with TRQP?
 
 The Trust over IP (ToIP) Foundation's **Trust Registry Query Protocol** (TRQP / TQRP v2.0)[^9] defines a standardized, read-only interface for querying registry states—acting effectively as a "DNS for Digital Trust."
 
@@ -260,7 +227,7 @@ TRQP v2.0 includes a standardized `context.time` parameter (formatted to RFC 333
 }
 ```
 
-### Coexistence of UNTP IDR and TRQP
+### Coexistence of UNTP and TRQP
 
 _NEED TO ADD MATERIAL HERE TO REPLACE SUPERCEDED CONTENT_
 
@@ -288,3 +255,5 @@ _NEED TO ADD MATERIAL HERE TO REPLACE SUPERCEDED CONTENT_
 [^10]: Trust Over IP Foundation: https://trustoverip.org/
 
 [^11]: Global Registry Information Directory - GRID: https://grid.unece.org
+
+[^12]: W3C VC Data Model 2.0: https://www.w3.org/TR/vc-data-model-2.0/
