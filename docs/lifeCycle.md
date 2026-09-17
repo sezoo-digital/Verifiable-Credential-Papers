@@ -8,9 +8,9 @@ math: true
 
 ## Introduction
 
-This document explores how we might satisfy both current and historical queries about issued credentials. The scope of this exploration is the work of the UN/CEFACT projects on global supply chain transparency, and in particular the UNTP[^1] and GRID[^11] projects. 
+This document explores how we might satisfy both current and historical queries about issued credentials. The initial focus of this exploration is the work of the UN/CEFACT projects on global supply chain transparency, and in particular the UNTP[^1] and GRID[^11] projects. However the intent is that the approach identified should work in all areas where understanding the history and status of a verifiable credential and its issuer is important. 
 
-This paper originated from discussions on lifecycle management for accreditation credentials issued by Accreditation Bodies (ABs) to Conformity Assessment Bodies (CABs), such as testing laboratories. The design principles presented here apply broadly across credential types and domain contexts.
+The original inspiration for this paper came from discussions on lifecycle management for accreditation credentials issued by Accreditation Bodies (ABs) to Conformity Assessment Bodies (CABs), such as testing laboratories.
 
 An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: [UNTP_IDR_Enabled-lifeCycle.md](UNTP_IDR_Enabled-lifeCycle.md)
 
@@ -21,16 +21,20 @@ Specifically, this paper considers how we might answer point-in-time historical 
 
 ---
 
-We can use conformancy testing and application of tested products to build a supply chain use case over time as follows:
+We can use a construction supply chain example to create a use case that will allow us to explore the issues. Here we are using conformancy testing and application of tested products (steel) to build a supply chain use case. Our story starts in 2012:
 
 1. **Year 01 (2012):** An Accreditation Body (AB) accredits a Testing Facility (TF) that performs steel testing. The accreditation receives a unique reference, **AC1**.
-   * *UNTP Model:* The accreditation is issued as a **Digital Identity Anchor (DIA)**.
+   * *UNTP Model:* The accreditation is issued as a **Digital Identity Anchor (DIA)**.<br></br>
+  
 2. **Year 02 (2013):** A Steel Manufacturer (SM) produces a green steel batch (**GREEN001**) and submits it to the Testing Facility. The facility issues a positive conformity assessment (**CA1**) confirming GREEN001 meets reinforced building steel standards.
-   * *UNTP Model:* The conformity assessment is issued as a **Digital Conformity Credential (DCC)**.
+   * *UNTP Model:* The conformity assessment is issued as a **Digital Conformity Credential (DCC)**.<br></br>
+
 3. **Year 03 (2014):** The Steel Manufacturer sells the batch of GREEN001 steel to a Prime Contractor (PC), who uses it to construct an office building (**B1**).
-   * *UNTP Model:* A **Digital Product Passport (DPP)** is issued and referenced in delivery documentation and on-product labeling (e.g., QR codes).
-4. **Year 10 (2021):** The Testing Facility shifts its business focus away from steel testing. Accreditation **AC1** is voluntarily withdrawn. In Year 11 (2022), the facility successfully applies for a new accreditation, **AC2**, covering a different domain.
-5. **Year 14 (2025/2026):** A building inspector audits Building B1 to verify its "green" status. They need to confirm: *"Was the steel used in this building certified green steel? Who certified it, to what standards, and were they accredited by a recognized accreditation body **11 years ago** when the steel was tested?"*
+   * *UNTP Model:* A **Digital Product Passport (DPP)** is issued and referenced in delivery documentation and on-product labeling (e.g., QR codes).<br></br>
+
+4. **Year 10 (2021):** The Testing Facility shifts its business focus away from steel testing. Accreditation **AC1** is voluntarily withdrawn. In Year 11 (2022), the facility successfully applies for a new accreditation, **AC2**, covering a different domain.<br></br>
+
+5. **Year 14 (2025/2026):** A building inspector audits Building B1 to verify its "green" status. They need to confirm: *"Was the steel used in this building certified green steel? Who certified it, to what standards, and were they accredited by a recognized accreditation body **11 years ago** when the steel was tested?"*<br></br>
 
 ### Timeline Visualization
 
