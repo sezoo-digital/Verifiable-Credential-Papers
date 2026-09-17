@@ -5,10 +5,11 @@ title: "Verifiable Credential Status Over Time using UNTP IDR"
 
 # Verifiable Credential Status Over Time
 
-**Note - Superceded**
-This document was constrained to a solution space given by the UNTP Specification 0.7
-
-A revised consideration of how best to solve this design challenge has been developed, [here](lifeCycle.md)
+> **Note - Superceded**
+> This document was constrained to a solution space given by the UNTP Specification 0.7
+>
+> A revised consideration of how best to solve this design challenge has been developed, [here](lifeCycle.md)
+{: .note }
 
 ## Introduction
 
