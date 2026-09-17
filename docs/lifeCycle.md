@@ -75,7 +75,7 @@ stateDiagram-v2
   [*] --> C:Accreditation requirements met
   C --> C : Periodic recheck
   C --> S : Requirements</br>not met
-  C --> W : No longer valid (e.g. replacement version issued)
+  C --> W : No longer valid </br>(e.g. replacement version issued)
   C --> X : For time-limited attestations only
   S --> C : Requirements</br>met
   S --> W : Failure to resolve suspension
