@@ -23,20 +23,22 @@ Specifically, this paper considers how we might answer point-in-time historical 
 
 ---
 
+## Use Case
+
 We can use a construction supply chain example to create a use case that will allow us to explore the issues. Here we are using conformancy testing and application of tested products (steel) to build a supply chain use case. Our story starts in 2012:
 
 1. **Year 01 (2012):** An Accreditation Body (AB) accredits a Testing Facility (TF) that performs steel testing. The accreditation receives a unique reference, **AC1**.
-   * *UNTP Model:* The accreditation is issued as a **Digital Identity Anchor (DIA)**.<br></br>
-  
+   * *UNTP Model:* The accreditation is issued as a **Digital Identity Anchor (DIA)**.<br>
+   
 2. **Year 02 (2013):** A Steel Manufacturer (SM) produces a green steel batch (**GREEN001**) and submits it to the Testing Facility. The facility issues a positive conformity assessment (**CA1**) confirming GREEN001 meets reinforced building steel standards.
-   * *UNTP Model:* The conformity assessment is issued as a **Digital Conformity Credential (DCC)**.<br></br>
+   * *UNTP Model:* The conformity assessment is issued as a **Digital Conformity Credential (DCC)**.<br>
 
 3. **Year 03 (2014):** The Steel Manufacturer sells the batch of GREEN001 steel to a Prime Contractor (PC), who uses it to construct an office building (**B1**).
-   * *UNTP Model:* A **Digital Product Passport (DPP)** is issued and referenced in delivery documentation and on-product labeling (e.g., QR codes).<br></br>
+   * *UNTP Model:* A **Digital Product Passport (DPP)** is issued and referenced in delivery documentation and on-product labeling (e.g., QR codes).<br>
 
-4. **Year 10 (2021):** The Testing Facility shifts its business focus away from steel testing. Accreditation **AC1** is voluntarily withdrawn. In Year 11 (2022), the facility successfully applies for a new accreditation, **AC2**, covering a different domain.<br></br>
+4. **Year 10 (2021):** The Testing Facility shifts its business focus away from steel testing. Accreditation **AC1** is voluntarily withdrawn. In Year 11 (2022), the facility successfully applies for a new accreditation, **AC2**, covering a different domain.<br>
 
-5. **Year 14 (2025/2026):** A building inspector audits Building B1 to verify its "green" status. They need to confirm: *"Was the steel used in this building certified green steel? Who certified it, to what standards, and were they accredited by a recognized accreditation body **11 years ago** when the steel was tested?"*<br></br>
+5. **Year 14 (2025/2026):** A building inspector audits Building B1 to verify its "green" status. They need to confirm: *"Was the steel used in this building certified green steel? Who certified it, to what standards, and were they accredited by a recognized accreditation body **11 years ago** when the steel was tested?"*<br>
 
 ### Timeline Visualization
 
