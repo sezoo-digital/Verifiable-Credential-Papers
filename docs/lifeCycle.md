@@ -6,7 +6,6 @@ math: true
 
 # Beyond 'Right Now': Managing Credential Lifecycle History in the UNTP Ecosystem
 
-> **Note**
 > An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: [UNTP_IDR_Enabled-lifeCycle.md](UNTP_IDR_Enabled-lifeCycle.md)
 {: .note }
 
