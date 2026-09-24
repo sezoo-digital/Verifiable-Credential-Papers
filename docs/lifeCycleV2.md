@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Beyond 'Right Now': Managing Credential Lifecycle History in the UNTP Ecosystem"
+title: "Draft: Managing Credential Lifecycle History"
 version: 0.2
 math: true
 ---
