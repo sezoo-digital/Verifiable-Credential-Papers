@@ -5,6 +5,11 @@ version: 0.2
 math: true
 ---
 
+> **Superceded**
+>
+> A revised consideration of how best to solve this design challenge has been developed, [here](lifeCycleV3.md)
+{: .warning }
+
 # Beyond 'Right Now': Managing Credential Lifecycle History in the UNTP Ecosystem
 
 > An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: [UNTP_IDR_Enabled-lifeCycle.md](UNTP_IDR_Enabled-lifeCycle.md)
