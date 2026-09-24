@@ -119,7 +119,7 @@ While the IDR standardizes the _discovery_ of resources—allowing a relying par
 ### W3C VC Status Representation
 The W3C Verifiable Credential Data Model[^12] introduces the Bitstring Status List v1.0 specification[^6] for managing credentialStatus. While many systems use a 1-bit status (representing a binary 0 = Active or 1 = Revoked), the specification supports multi-bit status allocations (statusSize > 1) to express complex states alongside a statusMessage array.
 
-For example, a 2-bit status configuration utilizing standard defined states yields four discrete values:
+For example, a 2-bit status configuration utilizing standard defined states yields four discrete values. A design might use these four values as follows:
 
 
 | Bin (2 bits) | Hex | State | Description |
@@ -163,6 +163,12 @@ Several emerging DID specifications implement the CEL architecture to establish 
 
 - did:webvh (DID Web with Verifiable History)[^14]: This specification enhances the standard did:web method by attaching a verifiable history log to a DID document hosted on an HTTPS domain. It introduces advanced security features, such as key pre-rotation (committing to the next signing key in advance to prevent unauthorized rotations) and the use of independent witnesses who co-sign updates.
 
+### Trust Registry Query Protocol (TRQP) 
+
+The Trust Regsitry Query Protocol, TRQP[^9], is developed and maintained by the Trust over IP (ToIP) Foundation. It defines a standardized, read-only interface for querying the state of trust registries. TRQP provides a common vocabulary and protocol for relying parties to ask specific questions about the authorization or recognition status of an entity, abstracting away the need to understand the registry's underlying data architecture.
+
+Crucially for historical verification, TRQP v2.0 includes a standardized context.time parameter (formatted to RFC 3339). This enables a verifier to submit a time-bound query - such as verifying if a conformity assessment body was authorized to perform a specific test on a specific date in the past. By standardizing the query syntax and the resulting response format, TRQP provides an interrogation layer that can be placed in front of discovery mechanisms like the UNTP Identity Resolver, allowing external systems to execute historical audits without manually parsing complex cryptographic event logs or versioned linksets.
+
 ## Towards a Solution
 Having defined the challenge and identified relevant specifications, the following sections detail an architectural approach to satisfying verifiable historical queries.
 
@@ -195,7 +201,7 @@ Layer2 --> Layer1
 - Function: Exposes a standardized discovery and verification interface to external relying parties.
 - Mechanism: The UNTP Identity Resolver (IDR) acts as the discovery engine, resolving the primary resource identifier to an IETF Linkset that points to both the static VC payload and the append-only state event stream. A Trust Registry Query Protocol (TRQP) endpoint provides the query interface, accepting point-in-time requests (e.g., context.time = T).
 - Trust Guarantee: Relying parties (e.g., customs platforms, auditors) do not need to manually parse raw event logs or traverse complex cryptographic chains. The query layer fetches the relevant linkset via the IDR, executes a "Latest-Before" algorithmic lookup over the verified state log, and returns a standardized authorization proof.
-- 
+  
 #### Architectural Benefits
 - Elegance (Separation of Concerns): Key rotation, semantic domain assertions, and operational status transitions are isolated into their respective functional layers, rather than forced into a single credential payload.
 - Efficiency (Minimal Data Footprint): Appending a small, signed state-transition event requires significantly less storage and computational overhead than re-signing, re-hosting, and re-distributing large structural VCs.
