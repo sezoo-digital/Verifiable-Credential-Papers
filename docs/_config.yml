@@ -30,3 +30,6 @@ callouts:
   tip:
     title: Pro Tip
     color: green
+
+plugins:
+  - jekyll-remote-theme
