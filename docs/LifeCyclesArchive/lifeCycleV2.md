@@ -9,7 +9,7 @@ nav_order: 1
 
 > **Superceded**
 >
-> A revised consideration of how best to solve this design challenge has been developed, [here](lifeCycleV3.md)
+> A revised consideration of how best to solve this design challenge has been developed, [here](../lifeCycleV3.md)
 {: .warning }
 
 # Beyond 'Right Now': Managing Credential Lifecycle History in the UNTP Ecosystem
