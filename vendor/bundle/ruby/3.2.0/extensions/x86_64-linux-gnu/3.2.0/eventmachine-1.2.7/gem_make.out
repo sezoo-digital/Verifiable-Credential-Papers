@@ -1,0 +1,19 @@
+current directory: /home/john/gitrepos/Verifiable-Credential-Papers/vendor/bundle/ruby/3.2.0/gems/eventmachine-1.2.7/ext/fastfilereader
+/usr/bin/ruby3.2 -I/usr/lib/ruby/vendor_ruby extconf.rb
+creating Makefile
+
+current directory: /home/john/gitrepos/Verifiable-Credential-Papers/vendor/bundle/ruby/3.2.0/gems/eventmachine-1.2.7/ext/fastfilereader
+make DESTDIR\= sitearchdir\=./.gem.20260927-106495-pq0byr sitelibdir\=./.gem.20260927-106495-pq0byr clean
+
+current directory: /home/john/gitrepos/Verifiable-Credential-Papers/vendor/bundle/ruby/3.2.0/gems/eventmachine-1.2.7/ext/fastfilereader
+make DESTDIR\= sitearchdir\=./.gem.20260927-106495-pq0byr sitelibdir\=./.gem.20260927-106495-pq0byr
+compiling mapper.cpp
+compiling rubymain.cpp
+linking shared-object fastfilereaderext.so
+
+current directory: /home/john/gitrepos/Verifiable-Credential-Papers/vendor/bundle/ruby/3.2.0/gems/eventmachine-1.2.7/ext/fastfilereader
+make DESTDIR\= sitearchdir\=./.gem.20260927-106495-pq0byr sitelibdir\=./.gem.20260927-106495-pq0byr install
+/usr/bin/install -c -m 0755 fastfilereaderext.so ./.gem.20260927-106495-pq0byr
+
+current directory: /home/john/gitrepos/Verifiable-Credential-Papers/vendor/bundle/ruby/3.2.0/gems/eventmachine-1.2.7/ext/fastfilereader
+make DESTDIR\= sitearchdir\=./.gem.20260927-106495-pq0byr sitelibdir\=./.gem.20260927-106495-pq0byr clean

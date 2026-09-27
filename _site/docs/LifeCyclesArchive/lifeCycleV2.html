@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Draft: Managing Credential Lifecycle History | Verifiable-Credential-Papers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Draft: Managing Credential Lifecycle History" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A repository for working papers on verifiable credentials that allows drafts to be shared and commented on by others." />
+<meta property="og:description" content="A repository for working papers on verifiable credentials that allows drafts to be shared and commented on by others." />
+<link rel="canonical" href="http://localhost:4000/docs/LifeCyclesArchive/lifeCycleV2.html" />
+<meta property="og:url" content="http://localhost:4000/docs/LifeCyclesArchive/lifeCycleV2.html" />
+<meta property="og:site_name" content="Verifiable-Credential-Papers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Draft: Managing Credential Lifecycle History" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A repository for working papers on verifiable credentials that allows drafts to be shared and commented on by others.","headline":"Draft: Managing Credential Lifecycle History","url":"http://localhost:4000/docs/LifeCyclesArchive/lifeCycleV2.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=264edf0bcdd25ac49038264a3775e6eadb562188">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Verifiable-Credential-Papers</a></h1>
+      
+
+      <blockquote class="warning">
+  <p><strong>Superceded</strong></p>
+
+  <p>A revised consideration of how best to solve this design challenge has been developed, <a href="../lifeCycleV3.md">here</a></p>
+</blockquote>
+
+<h1 id="beyond-right-now-managing-credential-lifecycle-history-in-the-untp-ecosystem">Beyond ‘Right Now’: Managing Credential Lifecycle History in the UNTP Ecosystem</h1>
+
+<blockquote class="note">
+  <p>An earlier draft of this work constrained the potential solution space to the elements already defined in the UNTP Specification 0.7. That work can be found here: <a href="/docs/LifeCyclesArchive/UNTP_IDR_Enabled-lifeCycle.html">UNTP_IDR_Enabled-lifeCycle.md</a></p>
+</blockquote>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This document explores how we might satisfy both current and historical queries about verified credentials. The  catalyst for this exploration is the work of the UN/CEFACT projects on global supply chain transparency, and in particular the UNTP<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> and GRID<sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">2</a></sup> projects. The start of this paper originated in discussions on lifecycle management for accreditation credentials issued by Accreditation Bodies (ABs) to Conformity Assessment Bodies (CABs), such as testing laboratories.</p>
+
+<p>However the intent is that the approach identified should work in all areas where understanding the history and status of a verifiable credential and its issuer is important.</p>
+
+<p>Specifically, this paper considers how we might answer point-in-time historical questions such as:</p>
+
+<ul>
+  <li><strong>“Was Product X tested to Standard Y by a lab accredited to test it in Year Z?”</strong></li>
+  <li><strong>“Was Organization X registered by an authoritative registrar of Country Y in Year Z?”</strong></li>
+</ul>
+
+<hr />
+
+<h2 id="use-case">Use Case</h2>
+
+<p>We can use a construction supply chain example to create a use case that will allow us to explore the issues. Here we are using conformancy testing and application of tested products (steel) to build a supply chain use case. Our story starts in 2012:</p>
+
+<ol>
+  <li><strong>Year 01 (2012):</strong> An Accreditation Body (AB) accredits a Testing Facility (TF) that performs steel testing. The accreditation receives a unique reference, <strong>AC1</strong>.
+    <ul>
+      <li><em>UNTP Model:</em> The accreditation is issued as a <strong>Digital Identity Anchor (DIA)</strong>.<br /></li>
+    </ul>
+  </li>
+  <li><strong>Year 02 (2013):</strong> A Steel Manufacturer (SM) produces a green steel batch (<strong>GREEN001</strong>) and submits it to the Testing Facility. The facility issues a positive conformity assessment (<strong>CA1</strong>) confirming GREEN001 meets reinforced building steel standards.
+    <ul>
+      <li><em>UNTP Model:</em> The conformity assessment is issued as a <strong>Digital Conformity Credential (DCC)</strong>.<br /></li>
+    </ul>
+  </li>
+  <li><strong>Year 03 (2014):</strong> The Steel Manufacturer sells the batch of GREEN001 steel to a Prime Contractor (PC), who uses it to construct an office building (<strong>B1</strong>).
+    <ul>
+      <li><em>UNTP Model:</em> A <strong>Digital Product Passport (DPP)</strong> is issued and referenced in delivery documentation and on-product labeling (e.g., QR codes).<br /></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Year 10 (2021):</strong> The Testing Facility shifts its business focus away from steel testing. Accreditation <strong>AC1</strong> is voluntarily withdrawn. In Year 11 (2022), the facility successfully applies for a new accreditation, <strong>AC2</strong>, covering a different domain.<br /></p>
+  </li>
+  <li><strong>Year 14 (2025/2026):</strong> A building inspector audits Building B1 to verify its “green” status. They need to confirm: <em>“Was the steel used in this building certified green steel? Who certified it, to what standards, and were they accredited by a recognized accreditation body <strong>11 years ago</strong> when the steel was tested?”</em><br /></li>
+</ol>
+
+<h3 id="timeline-visualization">Timeline Visualization</h3>
+
+<pre><code class="language-mermaid">gantt
+    title Accreditation Credentials Timeline
+    dateFormat YYYY-MM-DD
+    AC1 Active (Accredited)       :ac1a, 2012-01-01, 2021-12-31
+    AC1 Withdrawn                 :ac1w, 2022-01-01, 2026-12-31 
+    Steel Batch Tested (CA1)      :milestone, 2013-06-01, 0d
+    Steel Sold &amp; Building Built   :milestone, 2014-06-01, 0d 
+    AC2 Active (New Domain)       :ac2a, 2022-01-01, 2026-12-31
+    Building Inspection Audit     :milestone, 2025-06-01, 0d
+</code></pre>
+
+<h3 id="the-historical-query-challenge">The Historical Query Challenge</h3>
+<p>In long-lived product sectors like construction, changes in ownership or updated regulations frequently trigger historical audits. When locally held paper or digital records are incomplete, organizations must rely on manual, expert-led archival searches of the issuing registries. In some instances, original registry records may be checked to confirm if the local copies are accurate.</p>
+
+<p>However for all but the most trivial of checks, the time at which events occured is important. Products take time to manufacture. Goods take time to ship. The state and scope of registrations, licences and certifications change over time as do their owners. Supply chains are complex meshes of independent but interconnected parties, with transactions and system updates occuring at their own points in time. The idea that we can “just” check the current status has always been a simplification.</p>
+
+<p>The opportunity With UNTP and associated UN/CEFACT projects, is to establish a trustworthy, transparent, and algorithmically (machine) derivable <strong>verifiable history</strong> so that we can better answer point in time (historical) queries and also more confidently answer current queries. Rather than relying on manual archival searches, we want to enable queries to be answered using cryptographically protected records issued by authoritative bodies.</p>
+
+<h2 id="prior-work">Prior Work</h2>
+
+<h3 id="conformity-life-cycle">Conformity Life Cycle</h3>
+<p>In this section “conformity” means the outcome of tests and checks that something meets some specified standard(s). In the general model, a national testing authority checks that a test lab (also known as a Conformity Assessment Body, or CAB) is capable of performing certain tests to certain standards. The testing authority <em>certifies</em> the CAB as being able to perform a range of tests to these standards.</p>
+
+<p>As defined by UNTP<sup id="fnref:1:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>:</p>
+
+<blockquote>
+  <p>Conformity assessment bodies (CABs) undertake assessments for the purpose of determining whether products, processes or organisations meet specified requirements. The joint UNIDO/ISO publication Building Trust - The Conformity Assessment Toolbox represents a useful resource for understanding conformity assessment and its role in international trade.</p>
+</blockquote>
+
+<p>The certification of CABs, and the conformity assessments issued by CABs have a lifecycle and point-in-time quality. There is the concept of “status” of the recognition of CABs and the assessments that they issue and that status may change over time.</p>
+
+<p>The UN/CEFACT White Paper on Conformity Exchange<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">3</a></sup> notes that “digitalising status information in the context of conformity attestations warrants further investigation,” emphasizing a key lifecycle principle:</p>
+
+<blockquote>
+  <p><em>“The issuer of the attestation [must] be recognised as retaining authority over the attestation, in order to provide certainty over the state (e.g., withdrawal, amendment, expiry) of an attestation over its valid lifetime.”</em></p>
+</blockquote>
+
+<p>While Section 6.5.6 of the UN/CEFACT Business Requirements Specification (BRS)<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">4</a></sup> discusses attestation status, it does not define mechanisms for historical time-based queries. Annex 5 of the BRS presents the standard state transition lifecycle (the periodic recheck process has been added to this representation):</p>
+
+<pre><code class="language-mermaid">---
+config:
+  layout: elk
+title: State Transition Diagram for Accreditations
+---
+stateDiagram-v2
+  direction TB
+  %% define states
+  C: Current
+  S: Suspended
+  X: Expired
+  W: Withdrawn
+
+  %% transitions
+  [*] --&gt; C:Accreditation requirements met
+  C --&gt; C : Periodic recheck
+  C --&gt; S : Requirements&lt;/br&gt;not met
+  C --&gt; W : No longer valid &lt;/br&gt;(e.g. replacement version issued)
+  C --&gt; X : For time-limited attestations only
+  S --&gt; C : Requirements&lt;/br&gt;met
+  S --&gt; W : Failure to resolve suspension
+  X --&gt; W : Based on CAB policies or &lt;br/&gt;if otherwise rendered historically invalid
+  W --&gt; [*]
+</code></pre>
+
+<p>When evaluating this lifecycle against historical queries in 2026, two key operational barriers arise:</p>
+
+<ol>
+  <li>
+    <p><strong>Current-State Bias:</strong> Registries typically display only the present status of a credential. In 2026, AC1 shows as Withdrawn and AC2 shows as Current. Without historical timestamps for each state transition, verifiers cannot prove whether AC1 was active when the steel was tested in 2013.</p>
+  </li>
+  <li>
+    <p><strong>Data Retention Limits:</strong> Issuers are not always legally required or technically configured to publish full historical logs. Registries may only retain records for statutory periods (e.g., 7 years) or display only recent activity.</p>
+  </li>
+</ol>
+
+<h3 id="w3c-vc-status-representation">W3C VC status representation</h3>
+
+<p>The W3C Verifiable Credential Data Model<sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">5</a></sup> introduces the <strong>Bitstring Status List v1.0 specification</strong><sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">6</a></sup> for managing <code class="language-plaintext highlighter-rouge">credentialStatus</code>. While many systems use a 1-bit status (representing a binary 0 = Active or 1 = Revoked), the specification supports multi-bit status allocations (<code class="language-plaintext highlighter-rouge">statusSize</code> &gt; 1) to express complex states alongside a <code class="language-plaintext highlighter-rouge">statusMessage</code> array.</p>
+
+<p>For example, a 2-bit status configuration and using the NATA defined states yields four discrete values:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Bin (2 bits)</th>
+      <th style="text-align: left">Hex</th>
+      <th style="text-align: left">State</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">00</td>
+      <td style="text-align: left">0x0</td>
+      <td style="text-align: left">Active</td>
+      <td style="text-align: left">The initially awarded state</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">01</td>
+      <td style="text-align: left">0x1</td>
+      <td style="text-align: left">Suspended</td>
+      <td style="text-align: left">Temporarily invalid</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">10</td>
+      <td style="text-align: left">0x2</td>
+      <td style="text-align: left">Withdrawn</td>
+      <td style="text-align: left">Lab chose to end accreditation</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">11</td>
+      <td style="text-align: left">0x3</td>
+      <td style="text-align: left">Cancelled</td>
+      <td style="text-align: left">NATA forcibly removed accreditation)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This could be represented by a <code class="language-plaintext highlighter-rouge">credentialStatus.statusMessage</code> array as shown below (ignoring the explanation for each state provided above):</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"credentialStatus"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BitstringStatusListEntry"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"statusSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"statusMessage"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0"</span><span class="p">,</span><span class="w"> </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Active"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Suspended"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x2"</span><span class="p">,</span><span class="w"> </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Withdrawn"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x3"</span><span class="p">,</span><span class="w"> </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cancelled"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>The Limitation of Bitstring Status for Historical Audits</strong></p>
+
+<p>Bitstring status lists are designed to answer real-time queries: <em>“Is this credential valid right now?”</em></p>
+
+<p>Because a bitstring list is dynamically fetched at runtime, updating a bit position to reflect a current withdrawal overwrites the previous active status without leaving an inline historical trail inside the credential itself. Therefore, while bitstring status is effective for immediate revocation, it cannot independently resolve historical point-in-time queries.</p>
+
+<p>In other words, a bistring status lists alone cannot satisfy our requirements for historical searches.</p>
+
+<h3 id="validity-periods-and-credential-immutability">Validity Periods and Credential Immutability</h3>
+<p>The UNTP architecture uses issuer-hosted storage rather than issued to holder wallets model. This means that an issuer could, theoretically, edit and resign a credential that they have previously issued, For example, a period of validity could be closed early by editing the original credential’s <code class="language-plaintext highlighter-rouge">validUntil</code> field and re-signing the file.</p>
+
+<p>However, <strong>editing and re-signing issued credentials violates fundamental Verifiable Credential design principles and would introduce several problems:</strong></p>
+
+<ul>
+  <li>
+    <p><strong>Immutability:</strong> Verifiable Credentials are cryptographic assertions anchored to a specific moment in time. Altering payload contents changes the digital signature hash.</p>
+  </li>
+  <li>
+    <p><strong>Verification Discrepancies:</strong> Modifying a credential breaks downstream cached copies and invalidates stored Verifiable Presentations (VPs) held by third parties.</p>
+  </li>
+  <li>
+    <p><strong>Alignment with Physical Conventions:</strong> In the physical world, a paper certificate issued in 2012 remains an unalterable artifact of what was true on that date.</p>
+  </li>
+</ul>
+
+<p>This means that if a credential was issued with a null <code class="language-plaintext highlighter-rouge">validUntil</code> field, that field should remain null, permanently.</p>
+
+<p>This means that historical state changes should be handled through some form of external resolution.</p>
+
+<h3 id="cryptographic-event-logs">Cryptographic Event Logs</h3>
+
+<p>A Cryptographic Event Log is an append-only data structure designed to securely record, manage, and verify changes to data in decentralized systems. Rather than relying on a centralized authority to maintain a database of historical states, a CEL utilizes cryptographic techniques to create a tamper-evident, hash-chained sequence of events. Every update is mathematically chained to the entry before it, ensuring that the full sequence of changes can be independently verified.</p>
+
+<p><strong>The Problem CEL Solves</strong>
+Standard credential revocation mechanisms and basic Decentralized Identifier (DID) methods often overwrite previous data, providing only a current snapshot of an identity or resource. This vulnerability means an identity document can be silently rewritten, removing the evidence necessary to verify a historical signature.</p>
+
+<p>CEL solves the specific problem of key management and identifier control over time. By maintaining an immutable history of key rotations and document updates, CEL allows a verifier to independently reconstruct an entity’s DID document at any point in the past. This provides the cryptographic assurance required to trust a historical signature, ensuring that even if a current key is compromised, the historical record remains verifiable and immune to retroactive forgery.</p>
+
+<p><strong>Implementation Examples</strong>
+Several emerging DID specifications implement the CEL architecture to establish verifiable history:</p>
+
+<p>W3C CCG <code class="language-plaintext highlighter-rouge">did:cel</code>: The W3C Credentials Community Group is developing the core CEL specification alongside the did:cel method. This method supports the independent verification of DID document changes and offers extensibility for tracking modifications to other data types, all without requiring traditional blockchain solutions.</p>
+
+<p>did:webvh (DID Web with Verifiable History): This specification enhances the standard did:web method by attaching a verifiable history log to a DID document hosted on an HTTPS domain. It introduces advanced security features, such as key pre-rotation—where an entity commits to their next signing key in advance to prevent unauthorized future rotations—and the use of independent witnesses who co-sign updates to prevent a single compromised party from altering the log.</p>
+
+<h2 id="towards-a-solution">Towards a solution</h2>
+
+<p>Having described the problem we want to solve, and identified relevant prior work, we now move onto how we might answer our verifiable history challenge.</p>
+
+<h3 id="architectural-rules">Architectural Rules</h3>
+
+<p>An optimal architecture separates cryptographic provenance, semantic claims, and verification query routing into three distinct, interoperable layers. This approach leverages the key-management guarantees of Cryptographic Event Logs (CEL) while avoiding the operational overhead of re-issuing full Verifiable Credentials (VCs) for every minor status change.</p>
+
+<pre><code class="language-mermaid">flowchart TD
+Layer1["Layer 1: Cryptographic Key Provenance Issuer Identity backed by CEL / `did:webvh`"]
+Layer2["Layer 2: Semantic Business Lifecycle Static VC (Scope &amp; Assertions) + Append-Only State Log"]
+Layer3["Layer 3: Query &amp; Resolution API UNTP Identity Resolver (IDR) + TRQP Protocol"]
+Layer3 --&gt; Layer2
+Layer2 --&gt; Layer1
+</code></pre>
+
+<h4 id="1-foundation-layer-key-provenance-didcel--didwebvh">1. Foundation Layer: Key Provenance (did:cel / did:webvh)</h4>
+<ul>
+  <li><strong>Function</strong>: Manages the issuer’s identity, signing keys, and key rotations over time.</li>
+  <li><strong>Mechanism</strong>: The issuing authority (e.g., NATA) utilizes a self-certifying DID method backed by a cryptographic event log (did:cel or did:webvh).</li>
+  <li><strong>Trust Guarantee</strong>: When auditing an event from 10 years ago, a verifier can independently reconstruct the issuer’s DID document at time $T$ to prove that the key used to sign a credential was validly authorized on that specific date.</li>
+</ul>
+
+<h4 id="2-domain-layer-static-assertions--signed-event-sourced-lifecycle">2. Domain Layer: Static Assertions + Signed Event-Sourced Lifecycle</h4>
+<ul>
+  <li><strong>Function</strong>: Captures semantic claims and tracks state changes over time.</li>
+  <li><strong>Mechanism:</strong>
+    <ul>
+      <li>Credential (Assertion): The issuing body issues an initial Accreditation VC (Digital Identity Anchor) containing the full, unalterable scope, capabilities, and standards. This payload remains permanently static and immutable.</li>
+      <li>State Stream (Lifecycle Log): Rather than generating a full replacement VC or relying on an ephemeral Bitstring Status List, state transitions (SUSPEND, REINSTATE, WITHDRAW) are appended as lightweight, signed, hash-linked state events to an append-only log tied to the unique accreditation relationship ID.</li>
+    </ul>
+  </li>
+  <li><strong>Trust Guarantee</strong>: The status log is append-only and hash-chained. The state at time $T$ is calculated deterministically by evaluating the event log up to timestamp $T$.
+    <h4 id="3-access-layer-untp-idr-routing--trqp-abstraction">3 Access Layer: UNTP IDR Routing &amp; TRQP Abstraction</h4>
+  </li>
+  <li>Function: Exposes a simple, standardized verification interface to external relying parties.</li>
+  <li>Mechanism: The UNTP Identity Resolver (IDR) links the primary resource identifier to both the static VC payload and the append-only state event stream. A Trust Registry Query Protocol (TRQP) wrapper accepts point-in-time queries (context.time = T).</li>
+  <li>Trust Guarantee: Relying parties (e.g., customs platforms, building inspectors) do not need to parse raw event logs manually; the query layer executes the “Latest-Before” logic over the verified state log and returns a simple authorization proof.</li>
+  <li>
+    <h3 id="architectural-benefits">Architectural Benefits</h3>
+  </li>
+  <li>Elegance (Separation of Concerns): Key rotation, semantic domain assertions, and operational status transitions are isolated into their respective layers rather than forced into a single credential payload.</li>
+  <li>Efficiency (Minimal Data Footprint): Appending a small, signed state-transition event (e.g., {“event”: “SUSPEND”, “timestamp”: T, “reason”: “nonconformity”}) requires significantly less storage and computational overhead than re-signing and re-hosting large structural VCs.</li>
+  <li>Trustworthiness (Deterministic Reconstruction): Historical verification does not rely on issuer trust at query time; it relies on mathematically verifying the hash-chain of key state events ($L_1$) and status state events ($L_2$) up to timestamp $T$.</li>
+</ul>
+
+<pre><code class="language-mermaid">flowchart TD
+    Verifier["External Verifier / Relying Party"]
+
+    subgraph Layer3 ["Layer 3: Query &amp; Resolution (Access)"]
+        TRQP["TRQP Endpoint &lt;br/&gt;(Time-bound Context Query)"]
+        IDR["UNTP Identity Resolver (IDR) &lt;br/&gt;(Discovery &amp; Routing)"]
+        
+        TRQP -- "Fetches Resource Linksets" --&gt; IDR
+    end
+
+    subgraph Layer2 ["Layer 2: Semantic Domain (Business Logic)"]
+        StaticVC["Static Verifiable Credential &lt;br/&gt;(Immutable Accreditation Payload)"]
+        StateLog["Append-Only State Event Log &lt;br/&gt;(e.g., Suspended, Reinstated)"]
+        Bitstring["W3C Bitstring Status List &lt;br/&gt;(Real-Time Artifact Revocation)"]
+        
+        IDR -- "Resolves Structural Scope" --&gt; StaticVC
+        IDR -- "Resolves Business History" --&gt; StateLog
+        StaticVC -. "Checks File Validity" .-&gt; Bitstring
+    end
+
+    subgraph Layer1 ["Layer 1: Cryptographic Provenance (Security)"]
+        IssuerDID["Issuer Identity &lt;br/&gt;(did:cel or did:webvh)"]
+        KeyCEL["Cryptographic Event Log &lt;br/&gt;(Key Rotation History)"]
+        
+        IssuerDID -- "Backed By" --&gt; KeyCEL
+    end
+
+    Verifier -- "1. Submits Query (Time = T)" --&gt; TRQP
+    StaticVC -- "2. Signed By" --&gt; IssuerDID
+    StateLog -- "3. Signed By" --&gt; IssuerDID
+</code></pre>
+
+<p>This optimized architecture integrates the strengths of both approaches while enforcing strict separation of concerns:</p>
+<ul>
+  <li>Layer 3 (Query &amp; Resolution): The verifier interacts via a TRQP endpoint, passing a specific historical timestamp ($T$). The UNTP IDR handles the discovery, routing the request to the correct underlying payloads.</li>
+  <li>Layer 2 (Semantic Domain &amp; Status): The accreditation’s scope and assertions are captured in a static, immutable Verifiable Credential. The semantic lifecycle of that accreditation (e.g., active, suspended, withdrawn) is tracked via a signed, append-only state event log independent of the core VC payload.</li>
+  <li>Layer 1 (Cryptographic Provenance): The issuer’s DID is backed by a Cryptographic Event Log (such as did:cel), enabling the verifier to mathematically prove the issuer’s key state at the historical timestamp $T$.</li>
+  <li>Artifact Revocation (Bitstring Status List): The W3C Bitstring Status List remains attached specifically to the Static VC. It is reserved exclusively for binary, real-time revocation of the digital file itself (e.g., if the credential was issued in error or compromised), separating file-level security from the resource’s business lifecycle.</li>
+</ul>
+
+<hr />
+
+<h1 id="appendix-a---possible-future-integration-with-trqp">Appendix A - Possible future integration with TRQP?</h1>
+
+<p>The Trust over IP (ToIP) Foundation’s <strong>Trust Registry Query Protocol</strong> (TRQP / TQRP v2.0)<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">7</a></sup> defines a standardized, read-only interface for querying registry states—acting effectively as a “DNS for Digital Trust.”</p>
+
+<p>TRQP standardizes two query patterns:</p>
+
+<ol>
+  <li>
+    <p>Authorization Queries: “Has Authority A authorized Entity B to perform Action X on Resource Y?”</p>
+  </li>
+  <li>
+    <p>Recognition Queries: “Does Authority X recognize Entity B as an authoritative registrar?”</p>
+  </li>
+</ol>
+
+<h2 id="temporal-context-handling-in-trqp">Temporal Context Handling in TRQP</h2>
+
+<p>TRQP v2.0 includes a standardized <code class="language-plaintext highlighter-rouge">context.time</code> parameter (formatted to RFC 3339)<sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">8</a></sup>. Instead of requiring verifiers to manually parse IDR linksets, an external system can submit a time-bound authorization query directly to a TRQP endpoint:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"query_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authorization"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"authority_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"did:example:accreditation-body"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"entity_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"did:example:testing-facility"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"conformity-testing"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"resource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steel-certification"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"context"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-06-01T00:00:00Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="coexistence-of-untp-and-trqp">Coexistence of UNTP and TRQP</h3>
+
+<p><em>NEED TO ADD MATERIAL HERE TO REPLACE SUPERCEDED CONTENT</em></p>
+
+<hr />
+<p><strong>References</strong></p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>UNTP Specification: https://untp.unece.org/ <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
+    </li>
+    <li id="fn:11" role="doc-endnote">
+      <p>Global Registry Information Directory - GRID: https://grid.unece.org <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>UN/CEFACT White Paper on Conformity Exchange: https://unece.org/trade/documents/2024/07/session-documents/brs-digital-product-conformity-certificate-exchange-high <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>UN/CEFACT BRS Digital Product Conformity Certificate Exchange: https://unece.org/sites/default/files/2024-07/BRS-DigitalProductConformityCertificateExchange.pdf <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:12" role="doc-endnote">
+      <p>W3C VC Data Model 2.0: https://www.w3.org/TR/vc-data-model-2.0/ <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>W3C Bitstring Status List v1.0: https://www.w3.org/TR/vc-bitstring-status-list/ <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p>ToIP Trust Registry Query Protocol (TRQP v2.0): https://trustoverip.github.io/tswg-trust-registry-protocol/approved/ <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10" role="doc-endnote">
+      <p>Trust Over IP Foundation: https://trustoverip.org/ <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
