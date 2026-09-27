@@ -3,6 +3,7 @@ layout: default
 title: "Draft: Managing Credential Lifecycle History"
 version: 0.2
 math: true
+parent: Archive
 ---
 
 > **Superceded**
