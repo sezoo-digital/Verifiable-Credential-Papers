@@ -4,6 +4,7 @@ title: "Draft: Managing Credential Lifecycle History"
 version: 0.2
 math: true
 parent: Archive
+nav_order: 1
 ---
 
 > **Superceded**

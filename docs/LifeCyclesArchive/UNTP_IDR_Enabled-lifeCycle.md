@@ -2,6 +2,7 @@
 layout: default
 title: "Verifiable Credential Status Over Time using UNTP IDR"
 parent: Archive
+nav_order: 2
 ---
 
 # Verifiable Credential Status Over Time
