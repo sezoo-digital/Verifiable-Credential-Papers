@@ -118,7 +118,7 @@ In digital trust ecosystems, discovering verifiable information about a given en
 
 The IDR is designed to be scheme-agnostic. It accepts identifiers from various existing schemas (such as GS1 URIs, DIDs, or Digital Object Identifiers) and resolves them to a structured response based on the IETF Linkset format (RFC 9264). This linkset response contains a collection of links (targets) that are associated with the queried identifier (the anchor). This approach aligns with broader decentralized identity standards, wherein Decentralized Identifier (DID) documents can provide analogous functionality by hosting service endpoints that link to related verifiable data.
 
-While the IDR standardizes the _discovery_ of resources—allowing a relying party to locate a credential or its associated status logs—it must be combined with historical data structures to answer point-in-time queries effectively.
+While the IDR standardizes the _discovery_ of resources—allowing a relying party to locate a credential or its associated status logs, it needs to be combined with historical data structures to answer point-in-time queries effectively.
 
 ### W3C VC Status Representation
 The W3C Verifiable Credential Data Model[^12] introduces the Bitstring Status List v1.0 specification[^6] for managing credentialStatus. While many systems use a 1-bit status (representing a binary 0 = Active or 1 = Revoked), the specification supports multi-bit status allocations (statusSize > 1) to express complex states alongside a statusMessage array.
@@ -169,7 +169,7 @@ Several emerging DID specifications implement the CEL architecture to establish 
 
 ### Trust Registry Query Protocol (TRQP) 
 
-The Trust Regsitry Query Protocol, TRQP[^9], is developed and maintained by the Trust over IP (ToIP) Foundation. It defines a standardized, read-only interface for querying the state of trust registries. TRQP provides a common vocabulary and protocol for relying parties to ask specific questions about the authorization or recognition status of an entity, abstracting away the need to understand the registry's underlying data architecture.
+The Trust Registry Query Protocol, TRQP[^9], is developed and maintained by the Trust over IP (ToIP) Foundation. It defines a standardized, read-only interface for querying the state of trust registries. TRQP provides a common vocabulary and protocol for relying parties to ask specific questions about the authorization or recognition status of an entity, abstracting away the need to understand the registry's underlying data architecture.
 
 Crucially for historical verification, TRQP v2.0 includes a standardized context.time parameter (formatted to RFC 3339). This enables a verifier to submit a time-bound query - such as verifying if a conformity assessment body was authorized to perform a specific test on a specific date in the past. By standardizing the query syntax and the resulting response format, TRQP provides an interrogation layer that can be placed in front of discovery mechanisms like the UNTP Identity Resolver, allowing external systems to execute historical audits without manually parsing complex cryptographic event logs or versioned linksets.
 
