@@ -249,7 +249,7 @@ This optimized architecture integrates the strengths of established standards wh
 ---
 
 # Appendix A - Integration with TRQP
-The Trust over IP (ToIP) Foundation's Trust Registry Query Protocol (TRQP / TQRP v2.0)[^9] defines a standardized, read-only interface for querying registry states—acting effectively as a "DNS for Digital Trust."
+The Trust over IP (ToIP) Foundation's Trust Registry Query Protocol (TRQP / TQRP v2.0)[^9] defines a standardized, read-only interface for querying registry states - describing itself as a "DNS for Digital Trust."
 
 TRQP standardizes two primary query patterns:
 1. Authorization Queries: "Has Authority A authorized Entity B to perform Action X on Resource Y?"
