@@ -59,6 +59,10 @@ In long-lived product sectors like construction, changes in ownership or updated
 
 However, for all but the most trivial of checks, the precise time at which events occurred is significant. Products take time to manufacture. Goods take time to ship. The state and scope of registrations, licenses, and certifications change over time, as do their owners. Supply chains are complex meshes of independent but interconnected parties, with transactions and system updates occurring asynchronously. Relying exclusively on current status checks oversimplifies the requirements of historical verification. We are always checking history, even if its just today's history.
 
+**This consideration extends to every interaction involving distinct issue and verify steps. If there is a time gap between these events, then something might have happened to invalidate the issued credential by the time it is verified. And there is always a time gap.**
+
+As an aside - the verification process is one of gaining point in time evidence and hence sufficient confidence to make a decision. The term _trust_ means that we have **sufficient** confidence in the context of the decision. It does not mean that we have perfect information.
+
 Through UNTP and associated UN/CEFACT projects, the objective is to establish a trustworthy, transparent, and algorithmically derivable **verifiable history**. Rather than relying on manual archival searches, point-in-time queries should be resolvable using cryptographically protected records issued by authoritative bodies.
 
 ## Prior Work
