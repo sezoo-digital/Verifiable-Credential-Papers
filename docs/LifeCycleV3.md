@@ -113,7 +113,7 @@ Evaluating this lifecycle against historical queries in 2026 reveals two operati
 
 2. **Data Retention Limits**: Issuers may not be legally required or technically configured to publish full historical logs. Registries often retain records only for statutory periods or display only recent activity.
 
-This lifecyle can be anticipated for the GRID [^2] operating model, where applicantions to become members of the GRID are processed and sustaining membership requires meeting certain conditions and exit can be voluntary or procedural. An illustration of the GRID membership lifeycle is shown below.
+This lifecyle can be anticipated for the GRID [^2] operating model, where applications to become members of the GRID are processed and sustaining membership requires meeting conditions and exit can be voluntary or procedural. An illustration of the GRID membership lifeycle is shown below. Note that we haven't included a validity period expiry on GRID membership, the anticipated annual renewal process would provide a point in time at which renewal is evaluated.
 
 
 ```mermaid
