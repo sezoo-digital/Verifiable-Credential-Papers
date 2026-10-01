@@ -113,6 +113,36 @@ Evaluating this lifecycle against historical queries in 2026 reveals two operati
 
 2. **Data Retention Limits**: Issuers may not be legally required or technically configured to publish full historical logs. Registries often retain records only for statutory periods or display only recent activity.
 
+This lifecyle can be anticipated for the GRID [^2] operating model, where applicantions to become members of the GRID are processed and sustaining membership requires meeting certain conditions and exit can be voluntary or procedural. An illustration of the GRID membership lifeycle is shown below.
+
+
+```mermaid
+---
+config:
+   layout: elk
+title: State Transition Diagram for GRID Membership
+
+---
+stateDiagram-v2
+  direction TB
+  %% define states
+  A: Applicant
+  M: Member
+  S: Suspended
+  W: Withdrawn
+
+  %% transitions
+  [*] --> A: UN Member State applies for one of their Registries to join the GRID
+  A --> M : Eligibility Requirements met
+  A --> [*] : Eligibility Requirements not met
+  M --> M : Membership</br>Renewal
+  M --> S : not met
+  M --> W : Elects to</br>withdraw
+  S --> M : (re)met
+  S --> W : Failure to resolve suspension
+  W --> [*]
+```
+
 ### Identity Resolution and Linksets
 In digital trust ecosystems, discovering verifiable information about a given entity or resource requires standardized resolution mechanisms. The UNTP Identity Resolver (IDR)[^7] provides this capability, operating on the foundational principle: _"Given an ID of a thing, I can find verifiable data about that thing."_
 
