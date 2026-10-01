@@ -143,6 +143,8 @@ stateDiagram-v2
   W --> [*]
 ```
 
+If we imagine this state machine running for a period of time during which a number of applications are made, and members join and leave the GRID, we can see that we will have the same type of time based validity problem to resolve as we do with conformity assessments.
+
 ### Identity Resolution and Linksets
 In digital trust ecosystems, discovering verifiable information about a given entity or resource requires standardized resolution mechanisms. The UNTP Identity Resolver (IDR)[^7] provides this capability, operating on the foundational principle: _"Given an ID of a thing, I can find verifiable data about that thing."_
 
